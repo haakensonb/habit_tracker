@@ -1,7 +1,13 @@
 TODO:
+
 Unittest project setup(application factory)
+
+add marshmellow for serialization
+
 add flask-User for user management
+
 add flask-jwt(-extended?) for authentication
+
 Update documentation
 
 
