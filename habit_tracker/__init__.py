@@ -11,6 +11,11 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'habit_tracker.sqlite')
     )
+    # Works with three slashes after sqlite, even though documentation had four
+    # This may not be the correct way to setup flask-SQLAlchemy
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    from habit_tracker.models import db
+    db.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
