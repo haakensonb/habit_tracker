@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, jsonify
+    Blueprint, jsonify, request
 )
 
 from flask.views import MethodView
@@ -48,6 +48,33 @@ class HabitsAPI(MethodView):
                     return jsonify(habit)
             # otherwise no habit with that id was found, send error message
             return "That habit doesn't exist"
+    
+
+    def post(self):
+        # get_json will turn json into python dict
+        new_habit = request.get_json()
+        habits.append(new_habit)
+        return jsonify(new_habit)
+    
+    def delete(self, habit_id):
+        # this is sloppy but this is just for testing
+        # once database is used this will look different
+        global habits
+        # find habit that matches id
+        deleted_habit = None
+        for habit in habits:
+            if habit['habit_id'] == habit_id:
+                deleted_habit = habit
+                break
+
+        # set habits equal to filter that excludes old habit
+        habits = [x for x in habits if x['habit_id'] != habit_id]
+        # return the habit that is deleted
+        return jsonify(deleted_habit)
+
+
+
+
 
 # variable to store pluggable view
 habits_view = HabitsAPI.as_view('habits')
