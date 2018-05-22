@@ -6,4 +6,6 @@ instance/
 *.pyc
 __pycache__/
 
+*.db
+
 .vscode
