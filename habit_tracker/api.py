@@ -1,8 +1,12 @@
 from flask import (
     Blueprint, jsonify, request
 )
+from habit_tracker.models import (
+    Habit, Entry, HabitSchema, EntrySchema, db
+)
 
 from flask.views import MethodView
+from datetime import datetime, timedelta
 
 # create a blueprint for the api
 bp = Blueprint('api', __name__, url_prefix='/api')
@@ -51,11 +55,40 @@ class HabitsAPI(MethodView):
     
 
     def post(self):
-        # get_json will turn json into python dict
-        new_habit = request.get_json()
-        habits.append(new_habit)
-        return jsonify(new_habit)
-    
+        # the start date will just be the current time for now
+        # eventually it should be a value specified by the client
+        # client will send a string that will be parsed into a datetime obj
+        start_date = datetime.now()
+        new_habit = Habit(
+            name=request.json['name'],
+            description=request.json['description'],
+            start_date=start_date
+            )
+        db.session.add(new_habit)
+        # have to commit once here so that Habit exists for Entry to reference later
+        db.session.commit()
+
+        # now we need to make the 49 days of entry slots that relates to this habit
+        # Think the best way to do this for now is just to use a timedelta and a loop
+        # this should probably end up in it's own function eventually
+        delta = timedelta(days=1)
+        date = start_date
+
+        for x in range(49):
+            entry = Entry(
+                entry_day=date,
+                status='empty',
+                habit_id=new_habit.id
+            )
+            db.session.add(entry)
+            date += delta
+
+        # commit again to create entries
+        db.session.commit()
+        # need to figure out some way to return entries as well all formatted nice in json
+        return HabitSchema().jsonify(new_habit)
+
+
     def delete(self, habit_id):
         # this is sloppy but this is just for testing
         # once database is used this will look different
@@ -71,6 +104,13 @@ class HabitsAPI(MethodView):
         habits = [x for x in habits if x['habit_id'] != habit_id]
         # return the habit that is deleted
         return jsonify(deleted_habit)
+    
+
+    def put(self, user_id):
+        pass
+        
+
+
 
 
 

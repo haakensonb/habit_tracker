@@ -3,7 +3,6 @@ import os
 
 from flask import Flask
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -14,8 +13,10 @@ def create_app(test_config=None):
     # Works with three slashes after sqlite, even though documentation had four
     # This may not be the correct way to setup flask-SQLAlchemy
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-    from habit_tracker.models import db
+
+    from habit_tracker.models import db, ma
     db.init_app(app)
+    ma.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
