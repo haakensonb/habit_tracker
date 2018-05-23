@@ -85,8 +85,15 @@ class HabitsAPI(MethodView):
 
         # commit again to create entries
         db.session.commit()
-        habit_data = habit_schema.dump(new_habit)
-        entries_data = entries_schema.dump(Entry.query.filter(Entry.habit_id == new_habit.id).all())
+
+        # calling data at the end gets rid of empty object at the end
+        # use schema to turn new habit into json
+        habit_data = habit_schema.dump(new_habit).data
+
+        # calling .data at the end gets rid of the unneeded list around entries
+        # use schema to turn all entries for this habit into json
+        # get entries by searching for ones that have a foreign key corresponding to the new habit
+        entries_data = entries_schema.dump(Entry.query.filter(Entry.habit_id == new_habit.id).all()).data
         return jsonify({'habit': habit_data, 'entries': entries_data})
 
 
