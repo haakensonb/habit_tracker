@@ -35,22 +35,11 @@ class Entry(db.Model):
         return '<Entry {}'.format(self.status)
 
 
-class HabitSchema(ma.Schema):
+class HabitSchema(ma.ModelSchema):
     class Meta:
-        fields = (
-            'id',
-            'name',
-            'description',
-            'start_date'
-            )
+        model = Habit
 
 
-class EntrySchema(ma.Schema):
+class EntrySchema(ma.ModelSchema):
     class Meta:
-        fields = (
-            'id',
-            'entry_day',
-            'status'
-            )
-
-
+        model = Entry

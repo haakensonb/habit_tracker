@@ -85,8 +85,9 @@ class HabitsAPI(MethodView):
 
         # commit again to create entries
         db.session.commit()
-        # need to figure out some way to return entries as well all formatted nice in json
-        return HabitSchema().jsonify(new_habit)
+        habit_schema = HabitSchema()
+        # returns all ids for entries but not sure how to get more info
+        return jsonify(habit_schema.dump(new_habit).data)
 
 
     def delete(self, habit_id):
