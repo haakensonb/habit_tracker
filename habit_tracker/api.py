@@ -2,7 +2,7 @@ from flask import (
     Blueprint, jsonify, request
 )
 from habit_tracker.models import (
-    Habit, Entry, HabitSchema, EntrySchema, db
+    Habit, Entry, HabitSchema, EntrySchema, db, habit_schema, entries_schema
 )
 
 from flask.views import MethodView
@@ -85,9 +85,9 @@ class HabitsAPI(MethodView):
 
         # commit again to create entries
         db.session.commit()
-        habit_schema = HabitSchema()
-        # returns all ids for entries but not sure how to get more info
-        return jsonify(habit_schema.dump(new_habit).data)
+        habit_data = habit_schema.dump(new_habit)
+        entries_data = entries_schema.dump(Entry.query.filter(Entry.habit_id == new_habit.id).all())
+        return jsonify({'habit': habit_data, 'entries': entries_data})
 
 
     def delete(self, habit_id):
