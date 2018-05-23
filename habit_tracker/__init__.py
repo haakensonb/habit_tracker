@@ -2,6 +2,7 @@
 import os
 
 from flask import Flask
+from flask_migrate import Migrate
 
 def create_app(test_config=None):
     # create and configure the app
@@ -17,6 +18,8 @@ def create_app(test_config=None):
     from habit_tracker.models import db, ma
     db.init_app(app)
     ma.init_app(app)
+
+    migrate = Migrate(app, db)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
