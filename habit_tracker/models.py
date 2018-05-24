@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from marshmallow import fields
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -35,16 +36,6 @@ class Entry(db.Model):
         return '<Entry {}'.format(self.status)
 
 
-class HabitSchema(ma.Schema):
-    class Meta:
-        fields = (
-            'id',
-            'name',
-            'description',
-            'start_date'
-            )
-
-
 class EntrySchema(ma.Schema):
     class Meta:
         fields = (
@@ -54,5 +45,20 @@ class EntrySchema(ma.Schema):
         )
 
 
+class HabitSchema(ma.Schema):
+    entries = fields.Nested(EntrySchema, many=True)
+    class Meta:
+        # have to remember to expose the field for entries
+        fields = (
+            'id',
+            'name',
+            'description',
+            'start_date',
+            'entries'
+            )
+
+
 habit_schema = HabitSchema()
+habits_schema = HabitSchema(many=True)
+entry_schema = EntrySchema()
 entries_schema = EntrySchema(many=True)

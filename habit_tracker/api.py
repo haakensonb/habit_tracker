@@ -2,7 +2,8 @@ from flask import (
     Blueprint, jsonify, request
 )
 from habit_tracker.models import (
-    Habit, Entry, HabitSchema, EntrySchema, db, habit_schema, entries_schema
+    Habit, Entry, HabitSchema, EntrySchema, db, 
+    habit_schema, habits_schema, entry_schema, entries_schema
 )
 
 from flask.views import MethodView
@@ -10,20 +11,6 @@ from datetime import datetime, timedelta
 
 # create a blueprint for the api
 bp = Blueprint('api', __name__, url_prefix='/api')
-
-# sample data
-# for testing before database is configured
-habits = [
-    {
-        'habit_id': 1,
-        'habit_name': 'meditation',
-
-    },
-    {
-        'habit_id': 2,
-        'habit_name': 'floss'
-    }
-]
 
 
 class HabitsAPI(MethodView):
@@ -38,20 +25,14 @@ class HabitsAPI(MethodView):
         """
         # if no habit_id is specified, just return all the habits
         if habit_id is None:
-            # have to use jsonify because flask can't just serve a list
-            # instances of jsonify will be replaced by marshmallow soon
-            # for better serialization
-            return jsonify(habits)
+            query = Habit.query.all()
+            return jsonify(habits_schema.dump(query).data)
+            
         # if a habit_id is provided in the url
         elif habit_id:
-            # loop through all the habits
-            for habit in habits:
-                # check to see if their id matches the one provided
-                if habit['habit_id'] == habit_id:
-                    # if it matches, return it
-                    return jsonify(habit)
-            # otherwise no habit with that id was found, send error message
-            return "That habit doesn't exist"
+            # need to add some sort of error handling for when habit_id is out of range
+            query = Habit.query.get(habit_id)
+            return jsonify(habit_schema.dump(query).data)
     
 
     def post(self):
@@ -89,12 +70,7 @@ class HabitsAPI(MethodView):
         # calling data at the end gets rid of empty object at the end
         # use schema to turn new habit into json
         habit_data = habit_schema.dump(new_habit).data
-
-        # calling .data at the end gets rid of the unneeded list around entries
-        # use schema to turn all entries for this habit into json
-        # get entries by searching for ones that have a foreign key corresponding to the new habit
-        entries_data = entries_schema.dump(Entry.query.filter(Entry.habit_id == new_habit.id).all()).data
-        return jsonify({'habit': habit_data, 'entries': entries_data})
+        return jsonify(habit_data)
 
 
     def delete(self, habit_id):
