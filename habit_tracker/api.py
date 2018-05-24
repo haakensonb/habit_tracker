@@ -83,10 +83,28 @@ class HabitsAPI(MethodView):
         return jsonify(habit_schema.dump(habit).data)
     
 
-    def put(self, user_id):
-        pass
-        
+    # not sure if PUT method is needed yet
 
+
+    def patch(self, habit_id):
+        habit = Habit.query.get(habit_id)
+        new_data = habit_schema.load(request.json)
+        # there is probably a better way to handle this than just specifiying each input
+        name = new_data[0]['name']
+        if name:
+            habit.name = name
+            db.session.commit()
+
+        description = new_data[0]['description']
+        if description:
+            habit.description = description
+            db.session.commit()
+        
+        # start_date will be implimented later
+        # will probably need to parse string into datetime obj 
+
+        updated_habit = Habit.query.get(habit_id)
+        return jsonify(habit_schema.dump(updated_habit).data)
 
 
 
