@@ -74,20 +74,13 @@ class HabitsAPI(MethodView):
 
 
     def delete(self, habit_id):
-        # this is sloppy but this is just for testing
-        # once database is used this will look different
-        global habits
-        # find habit that matches id
-        deleted_habit = None
-        for habit in habits:
-            if habit['habit_id'] == habit_id:
-                deleted_habit = habit
-                break
-
-        # set habits equal to filter that excludes old habit
-        habits = [x for x in habits if x['habit_id'] != habit_id]
-        # return the habit that is deleted
-        return jsonify(deleted_habit)
+        # need error handling for when id doesn't exist
+        habit = Habit.query.get(habit_id)
+        # only have to delete habit and sqlalchemy will delete
+        # it's entries automatically because of a cascade
+        db.session.delete(habit)
+        db.session.commit()
+        return jsonify(habit_schema.dump(habit).data)
     
 
     def put(self, user_id):

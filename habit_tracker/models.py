@@ -19,7 +19,15 @@ class Habit(db.Model):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(200))
     start_date = db.Column(db.DateTime)
-    entries = db.relationship('Entry', backref='habit', lazy=True)
+    # cascade is required so that when a habit is deleted it will also
+    # remove all the entries associated with it
+    # an entry should not exists without a habit
+    # for ref see "Configuring delete/delete-orphan Cascade" in sqlalchemy docs
+    entries = db.relationship(
+        'Entry',
+        backref='habit',
+        lazy=True,
+        cascade='all, delete, delete-orphan')
 
     def __repr__(self):
         return '<Habit {}>'.format(self.name)
