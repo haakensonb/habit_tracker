@@ -1,4 +1,6 @@
-from habit_tracker.models import db, Habit, Entry
+from habit_tracker.models import (
+    db, Habit, Entry, EntrySchema
+    )
 import datetime
 
 
@@ -32,3 +34,5 @@ def test_entry_doesnt_exist(app):
     with app.app_context():
         entry = Entry.query.get(50)
         assert not entry
+
+
