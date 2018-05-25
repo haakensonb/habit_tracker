@@ -1,0 +1,2 @@
+graft habit_tracker/static
+global-exclude *.pyc
