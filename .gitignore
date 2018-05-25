@@ -1,11 +1,11 @@
 Pipfile
 Pipfile.lock
-
 instance/
-
 *.pyc
 __pycache__/
-
 *.db
-
 .vscode
+*.egg-info
+.coverage
+.pytest_cache/
+habit_tracker/.pytest_cache/
