@@ -20,11 +20,14 @@ def app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with app.app_context():
-        test_habit = Habit(name='test', description='this is a test', start_date=datetime.now())
+        test_habit1 = Habit(name='test', description='this is a test', start_date=datetime.now())
+        test_habit2 = Habit(name='test2', description='also a test', start_date=datetime.now())
         db.create_all()
-        db.session.add(test_habit)
+        db.session.add(test_habit1)
+        db.session.add(test_habit2)
         db.session.commit()
-        create_entries_for_habit(datetime.now(), test_habit, db)
+        create_entries_for_habit(datetime.now(), test_habit1, db)
+        create_entries_for_habit(datetime.now(), test_habit2, db)
     
     yield app
     os.close(db_fd)
