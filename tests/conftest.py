@@ -5,6 +5,7 @@ from datetime import datetime
 import pytest
 from habit_tracker import create_app
 from habit_tracker.models import db, Habit, Entry
+from habit_tracker.api import create_entries_for_habit
 
 @pytest.fixture
 def app():
@@ -20,12 +21,10 @@ def app():
 
     with app.app_context():
         test_habit = Habit(name='test', description='this is a test', start_date=datetime.now())
-        test_entry = Entry(entry_day=datetime.now(), status='empty', habit_id=1)
-
         db.create_all()
         db.session.add(test_habit)
-        db.session.add(test_entry)
         db.session.commit()
+        create_entries_for_habit(datetime.now(), test_habit, db)
     
     yield app
     os.close(db_fd)
