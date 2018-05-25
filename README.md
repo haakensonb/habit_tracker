@@ -1,15 +1,15 @@
-TODO:
+# TODO:
 
-Unittest project setup(application factory)
+add parsing for client start_date
 
 add flask-User for user management
 
 add flask-jwt(-extended?) for authentication
 
-Update documentation
 
 
-#Documentation
+# Documentation
+
 The goal of this project is to create a habit tracker based on the app 7 weeks.
 
 Backend will be REST api using flask
