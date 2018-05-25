@@ -49,23 +49,7 @@ class HabitsAPI(MethodView):
         # have to commit once here so that Habit exists for Entry to reference later
         db.session.commit()
 
-        # now we need to make the 49 days of entry slots that relates to this habit
-        # Think the best way to do this for now is just to use a timedelta and a loop
-        # this should probably end up in it's own function eventually
-        delta = timedelta(days=1)
-        date = start_date
-
-        for x in range(49):
-            entry = Entry(
-                entry_day=date,
-                status='empty',
-                habit_id=new_habit.id
-            )
-            db.session.add(entry)
-            date += delta
-
-        # commit again to create entries
-        db.session.commit()
+        create_entries_for_habit(start_date, new_habit, db)
 
         # calling data at the end gets rid of empty object at the end
         # use schema to turn new habit into json
@@ -108,7 +92,23 @@ class HabitsAPI(MethodView):
 
 
 
+def create_entries_for_habit(start_date, new_habit, db):
+    # now we need to make the 49 days of entry slots that relates to this habit
+    # Think the best way to do this for now is just to use a timedelta and a loop
+    # this will probably be moved to seperate file for utils eventually
+    delta = timedelta(days=1)
+    date = start_date
 
+    for x in range(49):
+        entry = Entry(
+            entry_day=date,
+            status='empty',
+            habit_id=new_habit.id
+        )
+        db.session.add(entry)
+        date += delta
+
+    db.session.commit()
 
 
 # variable to store pluggable view
