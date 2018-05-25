@@ -16,6 +16,7 @@ def app():
     })
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with app.app_context():
         test = Habit(name='test', description='this is a test', start_date=datetime.now())

@@ -13,6 +13,7 @@ def create_app(test_config=None):
     # Works with three slashes after sqlite, even though documentation had four
     # This may not be the correct way to setup flask-SQLAlchemy
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     from habit_tracker.models import db, ma
     db.init_app(app)
