@@ -111,9 +111,39 @@ def create_entries_for_habit(start_date, new_habit, db):
     db.session.commit()
 
 
+class EntryAPI(MethodView):
+    """
+    View for habits that deal specifically with entries.
+    """
+    # Should only need to see one entry at a time
+    # Any case where multiple entries are needed will also require habit
+    # info in which case it would be better to call a HabitAPI method
+    def get(self, entry_id):
+        entry = Entry.query.get(entry_id)
+        # should refactor other methods to use marshmallow's jsonify, it's cleaner
+        return entry_schema.jsonify(entry)
+    
+
+    def patch(self, entry_id):
+        entry = Entry.query.get(entry_id)
+        new_data = entry_schema.load(request.json).data
+
+        if new_data['status']:
+            entry.status = new_data['status']
+            db.session.commit()
+        
+        # need to add part for entry_day
+        
+        updated_entry = Entry.query.get(entry_id)
+        return entry_schema.jsonify(updated_entry)
+
+
 # variable to store pluggable view
 habits_view = HabitsAPI.as_view('habits')
 # add url rule for view to blueprint
 bp.add_url_rule('/habits/', view_func=habits_view)
 # add url rule for when habit id is provided in url
 bp.add_url_rule('/habits/<int:habit_id>', view_func=habits_view)
+
+entry_view = EntryAPI.as_view('entry')
+bp.add_url_rule('/entry/<int:entry_id>', view_func=entry_view)
