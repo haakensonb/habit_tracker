@@ -26,13 +26,13 @@ class HabitsAPI(MethodView):
         # if no habit_id is specified, just return all the habits
         if habit_id is None:
             query = Habit.query.all()
-            return jsonify(habits_schema.dump(query).data)
+            return habits_schema.jsonify(query)
             
         # if a habit_id is provided in the url
         elif habit_id:
             # need to add some sort of error handling for when habit_id is out of range
             query = Habit.query.get(habit_id)
-            return jsonify(habit_schema.dump(query).data)
+            return habit_schema.jsonify(query)
     
 
     def post(self):
@@ -40,9 +40,10 @@ class HabitsAPI(MethodView):
         # eventually it should be a value specified by the client
         # client will send a string that will be parsed into a datetime obj
         start_date = datetime.now()
+        new_data = habit_schema.load(request.json).data
         new_habit = Habit(
-            name=request.json['name'],
-            description=request.json['description'],
+            name=new_data['name'],
+            description=new_data['description'],
             start_date=start_date
             )
         db.session.add(new_habit)
@@ -51,10 +52,7 @@ class HabitsAPI(MethodView):
 
         create_entries_for_habit(start_date, new_habit, db)
 
-        # calling data at the end gets rid of empty object at the end
-        # use schema to turn new habit into json
-        habit_data = habit_schema.dump(new_habit).data
-        return jsonify(habit_data)
+        return habit_schema.jsonify(new_habit)
 
 
     def delete(self, habit_id):
@@ -64,32 +62,18 @@ class HabitsAPI(MethodView):
         # it's entries automatically because of a cascade
         db.session.delete(habit)
         db.session.commit()
-        return jsonify(habit_schema.dump(habit).data)
+        return habit_schema.jsonify(habit)
     
 
-    # not sure if PUT method is needed yet
-
-
-    def patch(self, habit_id):
+    def put(self, habit_id):
         habit = Habit.query.get(habit_id)
-        new_data = habit_schema.load(request.json)
-        # there is probably a better way to handle this than just specifiying each input
-        name = new_data[0]['name']
-        if name:
-            habit.name = name
-            db.session.commit()
-
-        description = new_data[0]['description']
-        if description:
-            habit.description = description
-            db.session.commit()
-        
-        # start_date will be implimented later
-        # will probably need to parse string into datetime obj 
-
-        updated_habit = Habit.query.get(habit_id)
-        return jsonify(habit_schema.dump(updated_habit).data)
-
+        new_data = habit_schema.load(request.json).data
+        habit.name = new_data['name']
+        habit.description = new_data['description']
+        # split at plus sign and take first half because we don't need the other empty timezone part
+        habit.start_date = new_data['start_date']
+        db.session.commit()
+        return habit_schema.jsonify(habit)
 
 
 def create_entries_for_habit(start_date, new_habit, db):
@@ -114,28 +98,25 @@ def create_entries_for_habit(start_date, new_habit, db):
 class EntryAPI(MethodView):
     """
     View for habits that deal specifically with entries.
+    This view may not even be needed.
     """
     # Should only need to see one entry at a time
     # Any case where multiple entries are needed will also require habit
     # info in which case it would be better to call a HabitAPI method
     def get(self, entry_id):
         entry = Entry.query.get(entry_id)
-        # should refactor other methods to use marshmallow's jsonify, it's cleaner
         return entry_schema.jsonify(entry)
     
 
-    def patch(self, entry_id):
+    def put(self, entry_id):
         entry = Entry.query.get(entry_id)
         new_data = entry_schema.load(request.json).data
 
-        if new_data['status']:
-            entry.status = new_data['status']
-            db.session.commit()
-        
-        # need to add part for entry_day
-        
-        updated_entry = Entry.query.get(entry_id)
-        return entry_schema.jsonify(updated_entry)
+        entry.status = new_data['status']
+        entry.entry_day = new_data['entry_day']
+        db.session.commit()
+
+        return entry_schema.jsonify(entry)
 
 
 # variable to store pluggable view

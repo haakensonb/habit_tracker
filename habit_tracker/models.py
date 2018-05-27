@@ -45,6 +45,7 @@ class Entry(db.Model):
 
 
 class EntrySchema(ma.Schema):
+    entry_day = ma.DateTime()
     class Meta:
         fields = (
             'id',
@@ -55,6 +56,7 @@ class EntrySchema(ma.Schema):
 
 class HabitSchema(ma.Schema):
     entries = fields.Nested(EntrySchema, many=True)
+    start_date = ma.DateTime()
     class Meta:
         # have to remember to expose the field for entries
         fields = (
