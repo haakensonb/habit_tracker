@@ -1,5 +1,5 @@
 from habit_tracker.models import (
-    habit_schema, habits_schema, Habit, Entry, db, entries_schema
+    habit_schema, habits_schema, Habit, Entry, db, entry_schema, entries_schema
 )
 from habit_tracker.api import create_entries_for_habit
 from datetime import datetime
@@ -68,7 +68,7 @@ def test_habits_api_patch(client, app):
         assert habit.entries
 
 
-def test_create_entries_for_habit(app):
+def test_create_entries_for_habit(client, app):
     with app.app_context():
         test_habit = Habit(name='test habit', description='blah blah', start_date=datetime.now())
         db.session.add(test_habit)
@@ -79,3 +79,20 @@ def test_create_entries_for_habit(app):
         for entry in entries:
             assert entry.status == 'empty'
             assert entry.habit_id == test_habit.id
+
+
+def test_entry_api_get(client, app):
+    response = client.get('/api/entry/1')
+    data = entry_schema.load(response.json).data
+    assert data
+    assert data['status'] == 'empty'
+
+
+def test_entry_api_patch(client, app):
+    response = client.patch('/api/entry/1', json={
+        'status': 'completed'
+    })
+    data = entry_schema.load(response.json).data
+    assert data
+    assert data['status'] == 'completed'
+
