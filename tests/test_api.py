@@ -52,9 +52,10 @@ def test_habits_api_delete(client, app):
         assert not last_entry
 
 
-def test_habits_api_patch(client, app):
-    response = client.patch('/api/habits/2', json={
-        'name': 'patched test', 'description': 'changed'
+def test_habits_api_put(client, app):
+    response = client.put('/api/habits/2', json={
+        'name': 'patched test', 'description': 'changed',
+        'id': 2, 'start_date': '2018-05-27T14:10:41.004412+00:00'
     })
     data = habit_schema.load(response.json)[0]
     assert data['name'] == 'patched test'
@@ -88,8 +89,10 @@ def test_entry_api_get(client, app):
     assert data['status'] == 'empty'
 
 
-def test_entry_api_patch(client, app):
-    response = client.patch('/api/entry/1', json={
+def test_entry_api_put(client, app):
+    response = client.put('/api/entry/1', json={
+        'entry_day': '2018-05-27T14:10:41.004412+00:00',
+        'id': 1,
         'status': 'completed'
     })
     data = entry_schema.load(response.json).data

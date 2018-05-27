@@ -70,7 +70,6 @@ class HabitsAPI(MethodView):
         new_data = habit_schema.load(request.json).data
         habit.name = new_data['name']
         habit.description = new_data['description']
-        # split at plus sign and take first half because we don't need the other empty timezone part
         habit.start_date = new_data['start_date']
         db.session.commit()
         return habit_schema.jsonify(habit)
