@@ -1,10 +1,9 @@
 # TODO:
 
-add parsing for client start_date
-
-add flask-User for user management
-
 add flask-jwt(-extended?) for authentication
+
+Instead of using flask-user just roll own user system.
+Flask-Mail can be added if needed for email confirmations.
 
 
 
