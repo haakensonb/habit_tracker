@@ -25,8 +25,7 @@ def create_app(test_config=None):
     app.config['JWT_BLACKLIST_ENABLED'] = True
     app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
-    jwt = JWTManager()
-    jwt.init_app(app)
+    jwt = JWTManager(app)
     @jwt.token_in_blacklist_loader
     def check_if_token_in_blacklist(decryted_token):
         jti = decryted_token['jti']

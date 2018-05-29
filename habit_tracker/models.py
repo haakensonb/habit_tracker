@@ -37,6 +37,7 @@ class User(db.Model):
 
 
 class RevokedToken(db.Model):
+    # __tablename__ = 'revoked_tokens'
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(200))
 
@@ -48,7 +49,7 @@ class RevokedToken(db.Model):
 
     @classmethod
     def is_jti_blacklisted(cls, jti):
-        query = cls.query.filter_by(jti = jti).first
+        query = cls.query.filter_by(jti=jti).first()
         return bool(query)
 
 
