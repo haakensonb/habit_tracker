@@ -42,4 +42,8 @@ def create_app(test_config=None):
     from . import api
     app.register_blueprint(api.bp)
 
+    # register auth blueprint
+    from . import auth
+    app.register_blueprint(auth.bp)
+
     return app

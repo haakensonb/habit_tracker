@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow import fields
+from passlib.hash import pbkdf2_sha256 as sha256
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -9,6 +10,27 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=True, nullable=False)
+
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+    @classmethod
+    def find_by_username(cls, username):
+        return cls.query.filter_by(username = username).first()
+    
+
+    @staticmethod
+    def generate_hash(password):
+        return sha256.hash(password)
+    
+
+    @staticmethod
+    def verify_hash(password, hash):
+        return sha256.verify(password, hash)
+
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -68,7 +90,17 @@ class HabitSchema(ma.Schema):
             )
 
 
+class UserSchema(ma.Schema):
+    class Meta:
+        fields  = (
+            'id',
+            'username',
+            'password'
+        )
+
+
 habit_schema = HabitSchema()
 habits_schema = HabitSchema(many=True)
 entry_schema = EntrySchema()
 entries_schema = EntrySchema(many=True)
+user_schema = UserSchema()
