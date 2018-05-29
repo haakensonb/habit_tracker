@@ -9,3 +9,4 @@ __pycache__/
 .coverage
 .pytest_cache/
 habit_tracker/.pytest_cache/
+secret.py
