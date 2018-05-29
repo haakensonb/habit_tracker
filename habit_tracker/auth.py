@@ -2,7 +2,12 @@ from flask import (
     Blueprint, request, jsonify
 )
 from flask.views import MethodView
-from habit_tracker.models import user_schema, User
+from habit_tracker.models import user_schema, User, RevokedToken
+from flask_jwt_extended import (
+    create_access_token, create_refresh_token, jwt_required,
+    jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
+)
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -17,7 +22,13 @@ class UserRegistration(MethodView):
             return jsonify({'message': 'user {} already exists'.format(user_data['username'])})
 
         new_user.save()
-        return jsonify({'message': 'user was created'})
+        access_token = create_access_token(identity=user_data['username'])
+        refresh_token = create_refresh_token(identity=user_data['username'])
+        return jsonify({
+            'message': 'user was created',
+            'access_token': access_token,
+            'refresh_token': refresh_token
+            })
 
 
 class UserLogin(MethodView):
@@ -28,24 +39,59 @@ class UserLogin(MethodView):
             return jsonify({'message': 'User {} doesn\'t exist'.format(user_data['username'])})
 
         if User.verify_hash(user_data['password'], current_user.password):
-            return jsonify({'message': 'Logged in as {}'.format(current_user.username)})
+            access_token = create_access_token(identity=user_data['username'])
+            refresh_token = create_refresh_token(identity=user_data['username'])
+
+            return jsonify({
+                'message': 'Logged in as {}'.format(current_user.username),
+                'access_token': access_token,
+                'refresh_token': refresh_token
+                })
         else:
             return jsonify({'message': 'Wrong credentials'})
 
 
 class UserLogoutAccess(MethodView):
+    @jwt_required
     def post(self):
-        pass
+        jti = get_raw_jwt()['jti']
+        try:
+            revoked_token = RevokedToken(jti=jti)
+            revoked_token.add()
+            return jsonify({
+                'message': 'Access token has been revoked'
+            })
+        except:
+            return jsonify({
+                'message': 'Something went wrong'
+            }), 500
 
 
 class UserLogoutRefresh(MethodView):
+    @jwt_refresh_token_required
     def post(self):
-        pass
+        jti = get_raw_jwt()['jti']
+        try:
+            revoked_token = RevokedToken(jti=jti)
+            revoked_token.add()
+            return jsonify({
+                'message': 'Refresh token has been revoked'
+            })
+        except:
+            return jsonify({
+                'message': 'Something when wrong'
+            }), 500
 
 
 class TokenRefresh(MethodView):
+    @jwt_refresh_token_required
     def post(self):
-        pass
+        current_user = get_jwt_identity()
+        access_token = create_access_token(identity=current_user)
+        return jsonify({
+            'access_token': access_token
+        })
+
 
 
 bp.add_url_rule('/registration', view_func=UserRegistration.as_view('registration'))

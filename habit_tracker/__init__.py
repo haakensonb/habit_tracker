@@ -2,6 +2,8 @@
 import os
 
 from flask import Flask
+from flask_jwt_extended import jwt_required, JWTManager
+from habit_tracker.models import RevokedToken
 
 def create_app(test_config=None):
     # create and configure the app
@@ -19,6 +21,18 @@ def create_app(test_config=None):
     db.init_app(app)
     ma.init_app(app)
 
+    app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
+    app.config['JWT_BLACKLIST_ENABLED'] = True
+    app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+
+    jwt = JWTManager()
+    jwt.init_app(app)
+    @jwt.token_in_blacklist_loader
+    def check_if_token_in_blacklist(decryted_token):
+        jti = decryted_token['jti']
+        return RevokedToken.is_jti_blacklisted(jti)
+
+
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -35,9 +49,11 @@ def create_app(test_config=None):
     
     # a simple test page that says hello
     @app.route('/hello')
+    @jwt_required
     def hello():
         return 'Hello World!'
-    
+
+
     # register the api blueprint with the app
     from . import api
     app.register_blueprint(api.bp)
@@ -47,3 +63,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
 
     return app
+
+
+
+
