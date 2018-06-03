@@ -1,7 +1,6 @@
 from habit_tracker.models import (
     habit_schema, habits_schema, Habit, Entry, db, entry_schema, entries_schema
 )
-from habit_tracker.api import create_entries_for_habit
 from datetime import datetime
 
 
@@ -74,7 +73,7 @@ def test_create_entries_for_habit(client, app):
         test_habit = Habit(name='test habit', description='blah blah', start_date=datetime.now())
         db.session.add(test_habit)
         db.session.commit()
-        create_entries_for_habit(datetime.now(), test_habit, db)
+        test_habit.create_entries(datetime.now())
         entries = Entry.query.filter(Entry.habit_id == test_habit.id).all()
         assert len(entries) == 49
         for entry in entries:

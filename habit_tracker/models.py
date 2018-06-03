@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow import fields
 from passlib.hash import pbkdf2_sha256 as sha256
+from datetime import timedelta
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -70,6 +71,22 @@ class Habit(db.Model):
 
     def __repr__(self):
         return '<Habit {}>'.format(self.name)
+    
+
+    def create_entries(self, start_date):
+        delta = timedelta(days=1)
+        date = start_date
+
+        for x in range(49):
+            entry = Entry(
+                entry_day=date,
+                status='empty',
+                habit_id=self.id
+            )
+            db.session.add(entry)
+            date += delta
+
+        db.session.commit()
 
 
 class Entry(db.Model):

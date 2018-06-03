@@ -50,7 +50,7 @@ class HabitsAPI(MethodView):
         # have to commit once here so that Habit exists for Entry to reference later
         db.session.commit()
 
-        create_entries_for_habit(start_date, new_habit, db)
+        new_habit.create_entries(start_date)
 
         return habit_schema.jsonify(new_habit)
 
@@ -75,23 +75,23 @@ class HabitsAPI(MethodView):
         return habit_schema.jsonify(habit)
 
 
-def create_entries_for_habit(start_date, new_habit, db):
-    # now we need to make the 49 days of entry slots that relates to this habit
-    # Think the best way to do this for now is just to use a timedelta and a loop
-    # this will probably be moved to seperate file for utils eventually
-    delta = timedelta(days=1)
-    date = start_date
+# def create_entries_for_habit(start_date, new_habit, db):
+#     # now we need to make the 49 days of entry slots that relates to this habit
+#     # Think the best way to do this for now is just to use a timedelta and a loop
+#     # this will probably be moved to seperate file for utils eventually
+#     delta = timedelta(days=1)
+#     date = start_date
 
-    for x in range(49):
-        entry = Entry(
-            entry_day=date,
-            status='empty',
-            habit_id=new_habit.id
-        )
-        db.session.add(entry)
-        date += delta
+#     for x in range(49):
+#         entry = Entry(
+#             entry_day=date,
+#             status='empty',
+#             habit_id=new_habit.id
+#         )
+#         db.session.add(entry)
+#         date += delta
 
-    db.session.commit()
+#     db.session.commit()
 
 
 class EntryAPI(MethodView):
