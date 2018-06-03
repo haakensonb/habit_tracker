@@ -48,7 +48,7 @@ def create_app(test_config=None):
     
     # a simple test page that says hello
     @app.route('/hello')
-    @jwt_required
+    # @jwt_required
     def hello():
         return 'Hello World!'
 

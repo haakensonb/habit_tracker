@@ -4,7 +4,7 @@ from datetime import datetime
 
 import pytest
 from habit_tracker import create_app
-from habit_tracker.models import db, Habit, Entry
+from habit_tracker.models import db, Habit, Entry, User
 from habit_tracker.api import create_entries_for_habit
 
 @pytest.fixture
@@ -20,9 +20,14 @@ def app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with app.app_context():
+        test_user = User(
+            username='test',
+            password=User.generate_hash('test')
+        )
         test_habit1 = Habit(name='test', description='this is a test', start_date=datetime.now())
         test_habit2 = Habit(name='test2', description='also a test', start_date=datetime.now())
         db.create_all()
+        db.session.add(test_user)
         db.session.add(test_habit1)
         db.session.add(test_habit2)
         db.session.commit()
