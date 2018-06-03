@@ -1,10 +1,8 @@
 # TODO:
 
-add flask-jwt(-extended?) for authentication
+Create front-end. Decide if Redux is needed.
 
-Instead of using flask-user just roll own user system.
-Flask-Mail can be added if needed for email confirmations.
-
+Add some type of registration confirmation. Maybe use Flask-Mail?
 
 
 # Documentation
