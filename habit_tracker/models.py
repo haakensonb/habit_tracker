@@ -59,6 +59,7 @@ class Habit(db.Model):
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(200))
     start_date = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # cascade is required so that when a habit is deleted it will also
     # remove all the entries associated with it
     # an entry should not exists without a habit
@@ -73,7 +74,7 @@ class Habit(db.Model):
         return '<Habit {}>'.format(self.name)
     
 
-    def create_entries(self, start_date):
+    def create_entries(self, start_date, user):
         delta = timedelta(days=1)
         date = start_date
 
@@ -81,7 +82,8 @@ class Habit(db.Model):
             entry = Entry(
                 entry_day=date,
                 status='empty',
-                habit_id=self.id
+                habit_id=self.id,
+                user_id=user.id
             )
             db.session.add(entry)
             date += delta
@@ -95,6 +97,7 @@ class Entry(db.Model):
     # status can be 'empty', 'failed', 'complete'
     status = db.Column(db.String(80))
     habit_id = db.Column(db.Integer, db.ForeignKey('habit.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     def __repr__(self):
         return '<Entry {}'.format(self.status)
@@ -106,7 +109,8 @@ class EntrySchema(ma.Schema):
         fields = (
             'id',
             'entry_day',
-            'status'
+            'status',
+            'user_id'
         )
 
 
@@ -120,7 +124,8 @@ class HabitSchema(ma.Schema):
             'name',
             'description',
             'start_date',
-            'entries'
+            'entries',
+            'user_id'
             )
 
 

@@ -3,7 +3,11 @@ from flask import (
 )
 from habit_tracker.models import (
     Habit, Entry, HabitSchema, EntrySchema, db, 
-    habit_schema, habits_schema, entry_schema, entries_schema
+    habit_schema, habits_schema, entry_schema, entries_schema,
+    User
+)
+from flask_jwt_extended import (
+    get_jwt_identity, jwt_required
 )
 
 from flask.views import MethodView
@@ -18,24 +22,31 @@ class HabitsAPI(MethodView):
     View for all habit related operations in the api
     """
 
+    @jwt_required
     def get(self, habit_id=None):
         """
         Manages GET request for this view. By default habit_id is None
         unless one is provided.
         """
+        current_user = User.find_by_username(get_jwt_identity())
         # if no habit_id is specified, just return all the habits
         if habit_id is None:
-            query = Habit.query.all()
+            query = Habit.query.filter(Habit.user_id == current_user.id).all()
             return habits_schema.jsonify(query)
             
         # if a habit_id is provided in the url
         elif habit_id:
             # need to add some sort of error handling for when habit_id is out of range
             query = Habit.query.get(habit_id)
-            return habit_schema.jsonify(query)
+            if query.user_id == current_user.id:
+                return habit_schema.jsonify(query)
+            else:
+                return jsonify({'message': 'That\'s not yours!'})
     
 
+    @jwt_required
     def post(self):
+        current_user = User.find_by_username(get_jwt_identity())
         # the start date will just be the current time for now
         # eventually it should be a value specified by the client
         # client will send a string that will be parsed into a datetime obj
@@ -44,54 +55,48 @@ class HabitsAPI(MethodView):
         new_habit = Habit(
             name=new_data['name'],
             description=new_data['description'],
-            start_date=start_date
+            start_date=start_date,
+            user_id = current_user.id
             )
         db.session.add(new_habit)
         # have to commit once here so that Habit exists for Entry to reference later
         db.session.commit()
 
-        new_habit.create_entries(start_date)
+        new_habit.create_entries(start_date, current_user)
 
         return habit_schema.jsonify(new_habit)
 
 
+    @jwt_required
     def delete(self, habit_id):
+        current_user = User.find_by_username(get_jwt_identity())
         # need error handling for when id doesn't exist
         habit = Habit.query.get(habit_id)
-        # only have to delete habit and sqlalchemy will delete
-        # it's entries automatically because of a cascade
-        db.session.delete(habit)
-        db.session.commit()
+        if habit.user_id == current_user.id:
+            # only have to delete habit and sqlalchemy will delete
+            # it's entries automatically because of a cascade
+            db.session.delete(habit)
+            db.session.commit()
+        else:
+            return jsonify({'message': 'That\'s not yours to delete!'})
+
         return habit_schema.jsonify(habit)
     
 
+    @jwt_required
     def put(self, habit_id):
+        current_user = User.find_by_username(get_jwt_identity())
         habit = Habit.query.get(habit_id)
-        new_data = habit_schema.load(request.json).data
-        habit.name = new_data['name']
-        habit.description = new_data['description']
-        habit.start_date = new_data['start_date']
-        db.session.commit()
+        if habit.user_id == current_user.id:
+            new_data = habit_schema.load(request.json).data
+            habit.name = new_data['name']
+            habit.description = new_data['description']
+            habit.start_date = new_data['start_date']
+            db.session.commit()
+        else:
+            return jsonify({'message': 'That\'s not yours to change!'})
+
         return habit_schema.jsonify(habit)
-
-
-# def create_entries_for_habit(start_date, new_habit, db):
-#     # now we need to make the 49 days of entry slots that relates to this habit
-#     # Think the best way to do this for now is just to use a timedelta and a loop
-#     # this will probably be moved to seperate file for utils eventually
-#     delta = timedelta(days=1)
-#     date = start_date
-
-#     for x in range(49):
-#         entry = Entry(
-#             entry_day=date,
-#             status='empty',
-#             habit_id=new_habit.id
-#         )
-#         db.session.add(entry)
-#         date += delta
-
-#     db.session.commit()
 
 
 class EntryAPI(MethodView):
@@ -102,20 +107,28 @@ class EntryAPI(MethodView):
     # Should only need to see one entry at a time
     # Any case where multiple entries are needed will also require habit
     # info in which case it would be better to call a HabitAPI method
+    @jwt_required
     def get(self, entry_id):
+        current_user = User.find_by_username(get_jwt_identity())
         entry = Entry.query.get(entry_id)
-        return entry_schema.jsonify(entry)
+        if entry.user_id == current_user.id:
+            return entry_schema.jsonify(entry)
+        else:
+            return jsonify({'message': 'That\'s not yours!'})
     
 
+    @jwt_required
     def put(self, entry_id):
+        current_user = User.find_by_username(get_jwt_identity())
         entry = Entry.query.get(entry_id)
-        new_data = entry_schema.load(request.json).data
-
-        entry.status = new_data['status']
-        entry.entry_day = new_data['entry_day']
-        db.session.commit()
-
-        return entry_schema.jsonify(entry)
+        if entry.user_id == current_user.id:
+            new_data = entry_schema.load(request.json).data
+            entry.status = new_data['status']
+            entry.entry_day = new_data['entry_day']
+            db.session.commit()
+            return entry_schema.jsonify(entry)
+        else:
+            return jsonify({'message': 'That\'s not yours to change!'})
 
 
 # variable to store pluggable view
