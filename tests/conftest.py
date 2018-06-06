@@ -19,21 +19,31 @@ def app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with app.app_context():
-        test_user = User(
-            username='test',
+        db.create_all()
+        user_1 = User(
+            username='user_1',
             password=User.generate_hash('test')
         )
-        test_habit1 = Habit(name='test', description='this is a test', start_date=datetime.now())
-        test_habit2 = Habit(name='test2', description='also a test', start_date=datetime.now())
-        db.create_all()
-        db.session.add(test_user)
+        user_2 = User(
+            username='user_2',
+            password=User.generate_hash('test')
+        )
+        db.session.add(user_1)
+        db.session.add(user_2)
+        # have to commit the users first so that their id's can
+        # be used to create habits properly
+        db.session.commit()
+
+        test_habit1 = Habit(name='test', description='this is a test', start_date=datetime.now(), user_id=user_1.id)
+        test_habit2 = Habit(name='test2', description='also a test', start_date=datetime.now(), user_id=user_1.id)
+        test_habit3 = Habit(name='test3', description='test for user_2', start_date=datetime.now(), user_id=user_2.id)
         db.session.add(test_habit1)
         db.session.add(test_habit2)
+        db.session.add(test_habit3)
         db.session.commit()
-        test_habit1.create_entries(datetime.now())
-        test_habit2.create_entries(datetime.now())
-        # create_entries_for_habit(datetime.now(), test_habit1, db)
-        # create_entries_for_habit(datetime.now(), test_habit2, db)
+        test_habit1.create_entries(datetime.now(), user_1)
+        test_habit2.create_entries(datetime.now(), user_1)
+        test_habit3.create_entries(datetime.now(), user_2)
     
     yield app
     os.close(db_fd)

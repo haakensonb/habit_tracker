@@ -1,28 +1,51 @@
 from habit_tracker.models import (
     habit_schema, habits_schema, Habit, Entry, db, entry_schema, entries_schema
 )
+from flask_jwt_extended import (
+    create_access_token
+)
 from datetime import datetime
 
 
-def test_habits_api_get_by_id(client):
-    response = client.get('/api/habits/1')
-    data = habit_schema.load(response.json)[0]
-    assert data['name'] == 'test'
-    assert data['description'] == 'this is a test'
-    assert data['entries']
+def test_habits_api_get_by_id(client, app):
+    with app.app_context():
+        access_token = create_access_token(identity='user_1')
+        headers = {
+            'Authorization': 'Bearer {}'.format(access_token)
+        }
+        response = client.get('/api/habits/1', headers=headers)
+        data = habit_schema.load(response.json).data
+        assert data['name'] == 'test'
+        assert data['description'] == 'this is a test'
+        assert data['entries']
 
 
-def test_habits_api_get_by_listing(client):
-    response = client.get('/api/habits/')
-    data = habits_schema.load(response.json)[0]
-    # also need to test start_date at some point
-    assert data[0]['name'] == 'test'
-    assert data[0]['description'] == 'this is a test'
-    assert data[0]['entries']
+def test_habits_api_get_by_id_wrong_user(client, app):
+    with app.app_context():
+        access_token = create_access_token(identity='user_2')
+        headers = {
+            'Authorization': 'Bearer {}'.format(access_token)
+        }
+        response = client.get('/api/habits/1', headers=headers)
+        assert response.json['message'] == 'That\'s not yours!'
 
-    assert data[1]['name'] == 'test2'
-    assert data[1]['description'] == 'also a test'
-    assert data[1]['entries']
+
+def test_habits_api_get_by_listing(client, app):
+    with app.app_context():
+        access_token = create_access_token(identity='user_1')
+        headers = {
+            'Authorization': 'Bearer {}'.format(access_token)
+        }
+        response = client.get('/api/habits/', headers=headers)
+        data = habits_schema.load(response.json)[0]
+        # also need to test start_date at some point
+        assert data[0]['name'] == 'test'
+        assert data[0]['description'] == 'this is a test'
+        assert data[0]['entries']
+
+        assert data[1]['name'] == 'test2'
+        assert data[1]['description'] == 'also a test'
+        assert data[1]['entries']
 
 
 def test_habits_api_post(client):
