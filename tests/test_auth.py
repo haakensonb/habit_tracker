@@ -26,11 +26,11 @@ def test_user_registration_post(client, app):
 
 def test_user_registration_already_exists(client):
     response = client.post('/auth/registration', json={
-        'username': 'test',
+        'username': 'user_1',
         'password': 'test'
     })
     data = response.get_json()
-    assert data['message'] == 'user test already exists'
+    assert data['message'] == 'user user_1 already exists'
 
 
 def test_login_user_doesnt_exist(client):
@@ -44,7 +44,7 @@ def test_login_user_doesnt_exist(client):
 
 def test_login_password_incorrect(client):
     response = client.post('/auth/login', json={
-        'username': 'test',
+        'username': 'user_1',
         'password': 'wrong password'
     })
     data = response.get_json()
@@ -53,12 +53,12 @@ def test_login_password_incorrect(client):
 
 def test_login_post(client):
     response = client.post('/auth/login', json={
-        'username': 'test',
+        'username': 'user_1',
         'password': 'test'
     })
     data = response.get_json()
     assert data
-    assert data['message'] == 'Logged in as test'
+    assert data['message'] == 'Logged in as user_1'
     assert data['access_token']
     assert data['refresh_token']
 
