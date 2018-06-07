@@ -2,6 +2,7 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 from flask_jwt_extended import jwt_required, JWTManager
 from habit_tracker.models import RevokedToken
 
@@ -31,6 +32,9 @@ def create_app(test_config=None):
         jti = decryted_token['jti']
         return RevokedToken.is_jti_blacklisted(jti)
 
+
+    # setup CORS for react
+    cors = CORS(app, origins=['http://localhost:3000'])
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
