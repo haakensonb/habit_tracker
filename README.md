@@ -2,7 +2,7 @@
 
 Add tests to make sure users can't view/edit/delete other's content
 
-Create front-end. Decide if Redux is needed.
+Remove react boilerplate code that isn't needed. Organize components/pages into folders
 
 Add some type of registration confirmation. Maybe use Flask-Mail?
 
