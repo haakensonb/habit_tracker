@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
 import NavBar from './NavBar'
 
-class HomePage extends Component {
+class LoginPage extends Component {
   render() {
     return (
       <div className='container'>
         <NavBar />
         <p>
-          This is the hompage.
+          This is the login page.
         </p>
       </div>
     )
   }
 }
 
-export default HomePage;
+export default LoginPage;
