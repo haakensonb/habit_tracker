@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
 import { loginAsync} from './redux/actions';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class LoginForm extends Component {
     constructor(props) {
       super(props);
       this.state = {
         username: '',
-        password: ''
+        password: '',
+        shouldRedirect: false
       }
   
       this.handleChange = this.handleChange.bind(this);
@@ -24,14 +26,21 @@ class LoginForm extends Component {
     }
   
     handleSubmit(event) {
-      this.props.login(this.state.username, this.state.password);
+      this.props.login(this.state.username, this.state.password)
       event.preventDefault();
     }
   
     render() {
+      // if the redux store shows that the user is authenticated
+      // that means they have already logged in and we can redirect them
+      if (this.props.isAuthenticated) {
+        return <Redirect to='/habits' />
+      }
+
       if (this.props.isFetching) {
         return <div>LOADING...</div>
       }
+
       return (
         <form onSubmit={this.handleSubmit}>
           <label>
@@ -52,7 +61,8 @@ class LoginForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isFetching: state.loginReducer.isFetching
+    isFetching: state.loginReducer.isFetching,
+    isAuthenticated: state.loginReducer.isAuthenticated
   }
 }
 

@@ -10,7 +10,7 @@ import RegistrationPage from './RegistrationPage';
 import LoginPage from './LoginPage';
 import HabitsPage from './HabitsPage';
 import requireAuth from './requireAuth';
-
+import LogoutPage from './LogoutPage';
 
 class App extends Component {
 
@@ -22,6 +22,7 @@ class App extends Component {
           <Route exact path="/register" component={RegistrationPage}/>
           <Route exact path="/login" component={LoginPage}/>
           <Route exact path="/habits" component={requireAuth(HabitsPage)}/>
+          <Route exact path="/logout" component={requireAuth(LogoutPage)}/>
         </Switch>
       </Router>
     );

@@ -1,6 +1,7 @@
 export const LOGIN = 'LOGIN';
 export const SEND_LOGIN = 'SEND_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
+export const LOGOUT = 'LOGOUT';
 
 
 export const sendLogin = () => {
@@ -15,6 +16,13 @@ export const receiveLogin = (authToken, refreshToken) => {
     type: RECEIVE_LOGIN,
     authToken: authToken,
     refreshToken: refreshToken
+  }
+}
+
+
+export const logoutUser = () => {
+  return {
+    type: LOGOUT
   }
 }
 
