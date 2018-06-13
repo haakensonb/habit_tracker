@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import { loginAsync} from './redux/actions';
+import { connect } from 'react-redux';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -22,11 +24,14 @@ class LoginForm extends Component {
     }
   
     handleSubmit(event) {
-      console.log("You are logged in")
+      this.props.login(this.state.username, this.state.password);
       event.preventDefault();
     }
   
     render() {
+      if (this.props.isFetching) {
+        return <div>LOADING...</div>
+      }
       return (
         <form onSubmit={this.handleSubmit}>
           <label>
@@ -41,8 +46,20 @@ class LoginForm extends Component {
           <br/>
           <input type="submit" value="Submit"/>
         </form>
-      )
+        )
     }
   }
+
+const mapStateToProps = (state) => {
+  return {
+    isFetching: state.loginReducer.isFetching
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (username, password) => dispatch(loginAsync(username, password))
+  }
+}
   
-  export default LoginForm;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)

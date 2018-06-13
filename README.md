@@ -6,6 +6,14 @@ Remove react boilerplate code that isn't needed. Organize components/pages into 
 
 Add some type of registration confirmation. Maybe use Flask-Mail?
 
+React:
+
+    Add logout function to clear localStorage and store
+
+    Add function to check if authToken is expired and refresh it. This could be called before any api function to make sure the token is still valid
+
+    Add page redirects with react-router
+
 
 # Documentation
 
