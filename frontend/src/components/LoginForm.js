@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { loginAsync} from './redux/actions';
+import { loginAsync} from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 

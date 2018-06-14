@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { logoutUser } from './redux/actions';
+import { logoutUser } from '../redux/actions';
 import Redirect from 'react-router-dom/Redirect';
 import connect from 'react-redux/lib/connect/connect';
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import NavBar from './NavBar'
-import HabitList from './HabitList'
+import NavBar from '../components/NavBar'
+import HabitList from '../components/HabitList'
 
 class HabitsPage extends Component {
   render() {

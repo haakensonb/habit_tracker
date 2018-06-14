@@ -4,13 +4,13 @@ import {
   BrowserRouter as Router,
   Route,
   Switch
-} from 'react-router-dom'
-import HomePage from './HomePage';
-import RegistrationPage from './RegistrationPage';
-import LoginPage from './LoginPage';
-import HabitsPage from './HabitsPage';
-import requireAuth from './requireAuth';
-import LogoutPage from './LogoutPage';
+} from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import RegistrationPage from './pages/RegistrationPage';
+import LoginPage from './pages/LoginPage';
+import HabitsPage from './pages/HabitsPage';
+import LogoutPage from './pages/LogoutPage';
+import requireAuth from './utils/requireAuth';
 
 class App extends Component {
 
