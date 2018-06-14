@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 class NavBar extends Component {
   render() {
     const isAuthenticated = this.props.isAuthenticated;
-
     return (
       <nav>
         {isAuthenticated ? (
