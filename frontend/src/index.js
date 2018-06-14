@@ -9,7 +9,7 @@ import { rootReducer } from './redux/reducers'
 import thunk from 'redux-thunk'
 import { receiveLogin } from './redux/actions';
 
-const store = createStore(
+export const store = createStore(
     rootReducer,
     applyMiddleware(thunk)
   );
