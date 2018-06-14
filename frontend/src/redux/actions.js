@@ -2,6 +2,7 @@ export const LOGIN = 'LOGIN';
 export const SEND_LOGIN = 'SEND_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
 export const LOGOUT = 'LOGOUT';
+export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
 
 
 export const sendLogin = () => {
@@ -23,6 +24,35 @@ export const receiveLogin = (authToken, refreshToken) => {
 export const logoutUser = () => {
   return {
     type: LOGOUT
+  }
+}
+
+
+export const updateAuthToken = (authToken) => {
+  return {
+    type: UPDATE_AUTH_TOKEN,
+    authToken: authToken
+  }
+}
+
+
+export const useRefreshToUpdateAuth = (refreshToken) => {
+  let url = 'http://127.0.0.1:5000/auth/token/refresh';
+
+  return (dispatch) => {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      dispatch(updateAuthToken(data.access_token));
+      localStorage.setItem('authToken', data.access_token);
+      console.log(data);
+    })
   }
 }
 

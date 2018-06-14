@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SEND_LOGIN, RECEIVE_LOGIN, LOGOUT } from "./actions";
+import { SEND_LOGIN, RECEIVE_LOGIN, LOGOUT, UPDATE_AUTH_TOKEN } from "./actions";
 
 const defaultState = {
   isFetching: false,
@@ -31,6 +31,12 @@ const loginReducer = (state = defaultState, action) => {
         refreshToken: '',
         isAuthenticated: false
       }
+    case UPDATE_AUTH_TOKEN:
+      return (Object.assign(
+        {},
+        state,
+        {authToken: action.authToken}
+      ))
     default:
       return state;
 

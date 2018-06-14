@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { rootReducer } from './redux/reducers'
 import thunk from 'redux-thunk'
-import { receiveLogin } from './redux/actions';
+import { receiveLogin, useRefreshToUpdateAuth } from './redux/actions';
 
 export const store = createStore(
     rootReducer,
@@ -22,6 +22,20 @@ const refreshToken = localStorage.getItem('refreshToken');
 if (authToken && refreshToken) {
   store.dispatch(receiveLogin(authToken, refreshToken))
 }
+
+// authTokens expire every 15 minutes
+// so every 14 and a half minutes (870000 milliseconds)
+// dispatch an action creator to get a refreshed token.
+// This function is called 30 seconds before expiration so that there is plenty of time
+// for the server to process the request and respond with the new token.
+// This way the user (probably) won't be caught in a state where there is an error
+// because they have an expired token and are waiting for a new one
+setTimeout(
+  () => {
+    const currState = store.getState();
+    const refreshToken = currState.loginReducer.refreshToken;
+    store.dispatch(useRefreshToUpdateAuth(refreshToken))
+  }, 870000);
 
 ReactDOM.render(
   // wrap entire app in provider and pass in redux's store
