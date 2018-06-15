@@ -30,11 +30,18 @@ if (authToken && refreshToken) {
 // for the server to process the request and respond with the new token.
 // This way the user (probably) won't be caught in a state where there is an error
 // because they have an expired token and are waiting for a new one
-setTimeout(
+setInterval(
   () => {
     const currState = store.getState();
+    console.log(currState)
     const refreshToken = currState.loginReducer.refreshToken;
-    store.dispatch(useRefreshToUpdateAuth(refreshToken))
+    const isAuthenticated = currState.loginReducer.isAuthenticated;
+    // check first to make sure that there is a refresh token
+    // and that the user is logged in, so that this doesn't
+    // run and fail on unathenticated pages (like the homepage)
+    if (refreshToken && isAuthenticated) {
+      store.dispatch(useRefreshToUpdateAuth(refreshToken))
+    }
   }, 870000);
 
 ReactDOM.render(

@@ -50,7 +50,12 @@ export const useRefreshToUpdateAuth = (refreshToken) => {
     .then(res => res.json())
     .then(data => {
       dispatch(updateAuthToken(data.access_token));
-      localStorage.setItem('authToken', data.access_token);
+      // make sure token actually came back before assigning
+      // so that authToken isn't accidentally set to undefined
+      // this should probably be made more robust in the future
+      if (data.access_token !== undefined){
+        localStorage.setItem('authToken', data.access_token);
+      }
       console.log(data);
     })
   }
