@@ -33,7 +33,7 @@ if (authToken && refreshToken) {
 setInterval(
   () => {
     const currState = store.getState();
-    console.log(currState)
+    // console.log(currState)
     const refreshToken = currState.loginReducer.refreshToken;
     const isAuthenticated = currState.loginReducer.isAuthenticated;
     // check first to make sure that there is a refresh token

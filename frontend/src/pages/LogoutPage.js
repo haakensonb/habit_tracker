@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
-import { logoutUser } from '../redux/actions';
+import { logoutUser, logoutUserFromApi } from '../redux/actions';
 import Redirect from 'react-router-dom/Redirect';
 import connect from 'react-redux/lib/connect/connect';
 
 class LogoutPage extends Component {
   componentWillMount(){
+    const authToken = this.props.authToken;
+    const refreshToken = this.props.refreshToken;
     // before the component mounts dispatch action creator to logout user
-    this.props.dispatch(logoutUser())
+    // logout from api
+    this.props.logoutUserFromApi(authToken, refreshToken);
+    // logout from redux
+    this.props.logoutUser();
     // also clear the local storage of tokens
     localStorage.clear()
   }
@@ -18,6 +23,18 @@ class LogoutPage extends Component {
   }
 }
 
-// have to use connect so that component will have access to dispatch
-// but we don't actually need to map state to props at all
-export default connect()(LogoutPage)
+const mapStateToProps = (state) => {
+  return {
+    authToken: state.loginReducer.authToken,
+    refreshToken: state.loginReducer.refreshToken
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logoutUserFromApi: (authToken, refreshToken) => {dispatch(logoutUserFromApi(authToken, refreshToken))},
+    logoutUser: () => {dispatch(logoutUser())}
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogoutPage)

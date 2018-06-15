@@ -28,6 +28,35 @@ export const logoutUser = () => {
 }
 
 
+export const logoutUserFromApi = (authToken, refreshToken) => {
+  return (dispatch) => {
+    const authUrl = 'http://127.0.0.1:5000/auth/logout/access';
+    const refreshUrl = 'http://127.0.0.1:5000/auth/logout/refresh';
+    // have to make two seperate api calls here
+    // one to logout the auth token and one for the refresh token
+
+    // we don't actually have to do anything to handle the return message until
+    // we add a flash message system
+    fetch(authUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`
+      }
+    })
+
+    fetch(refreshUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${refreshToken}`
+      }
+    })
+
+  }
+}
+
+
 export const updateAuthToken = (authToken) => {
   return {
     type: UPDATE_AUTH_TOKEN,
@@ -37,13 +66,13 @@ export const updateAuthToken = (authToken) => {
 
 
 export const useRefreshToUpdateAuth = (refreshToken) => {
-  let url = 'http://127.0.0.1:5000/auth/token/refresh';
+  const url = 'http://127.0.0.1:5000/auth/token/refresh';
 
   return (dispatch) => {
     fetch(url, {
       method: 'POST',
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
         'Authorization': `Bearer ${refreshToken}`
       }
     })
@@ -56,7 +85,7 @@ export const useRefreshToUpdateAuth = (refreshToken) => {
       if (data.access_token !== undefined){
         localStorage.setItem('authToken', data.access_token);
       }
-      console.log(data);
+      // console.log(data);
     })
   }
 }
