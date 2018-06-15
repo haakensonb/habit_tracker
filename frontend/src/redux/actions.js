@@ -1,9 +1,10 @@
-export const LOGIN = 'LOGIN';
 export const SEND_LOGIN = 'SEND_LOGIN';
 export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
 
+// need to rename because some of these functions are being used for multiple things
+// this isn't DRY, could be cleaned up and renamed
 
 export const sendLogin = () => {
   return {
@@ -117,6 +118,36 @@ export const loginAsync = (username, password) => {
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('username', username);
       console.log(res)
+    })
+  }
+}
+
+// this needs to be refactored into loginAsync
+export const registerAync = (username, password) => {
+  return (dispatch) => {
+    const url = 'http://127.0.0.1:5000/auth/registration';
+    const data = {
+      username: username,
+      password: password
+    }
+    dispatch(sendLogin());
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      const authToken = data.access_token;
+      const refreshToken = data.refresh_token;
+      const username = data.username;
+      dispatch(receiveLogin(authToken, refreshToken, username));
+      localStorage.setItem('authToken', authToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('username', username);
+      console.log(data)
     })
   }
 }

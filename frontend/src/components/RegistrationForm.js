@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+import { registerAync } from '../redux/actions';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -25,15 +28,24 @@ class RegistrationForm extends Component {
 
   handleSubmit(event) {
     if (this.state.password === this.state.passwordConfirm) {
-      console.log("Registered");
+      this.props.register(this.state.username, this.state.password);
     } else {
       console.log("Passwords don't match");
     }
-    console.log(this.state)
     event.preventDefault();
   }
 
   render() {
+    // if the redux store shows that the user is authenticated
+    // that means they have already logged in and we can redirect them
+    if (this.props.isAuthenticated) {
+      return <Redirect to='/habits' />
+    }
+
+    if (this.props.isFetching) {
+      return <div>LOADING...</div>
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
@@ -57,4 +69,17 @@ class RegistrationForm extends Component {
   }
 }
 
-export default RegistrationForm;
+const mapStateToProps = (state) => {
+  return {
+    isFetching: state.loginReducer.isFetching,
+    isAuthenticated: state.loginReducer.isAuthenticated
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    register: (username, password) => dispatch(registerAync(username, password))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
