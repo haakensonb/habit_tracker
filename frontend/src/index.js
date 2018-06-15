@@ -17,10 +17,11 @@ export const store = createStore(
 // check to see if tokens are already in the localStorage
 const authToken = localStorage.getItem('authToken');
 const refreshToken = localStorage.getItem('refreshToken');
+const username = localStorage.getItem('username');
 // If they are we need to place them in the store.
 // This makes sure that the user will stay logged in if they refresh the page
-if (authToken && refreshToken) {
-  store.dispatch(receiveLogin(authToken, refreshToken))
+if (authToken && refreshToken && username) {
+  store.dispatch(receiveLogin(authToken, refreshToken, username))
 }
 
 // authTokens expire every 15 minutes

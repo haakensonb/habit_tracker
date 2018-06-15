@@ -27,7 +27,8 @@ class UserRegistration(MethodView):
         return jsonify({
             'message': 'user was created',
             'access_token': access_token,
-            'refresh_token': refresh_token
+            'refresh_token': refresh_token,
+            'username': new_user.username
             })
 
 
@@ -45,7 +46,8 @@ class UserLogin(MethodView):
             return jsonify({
                 'message': 'Logged in as {}'.format(current_user.username),
                 'access_token': access_token,
-                'refresh_token': refresh_token
+                'refresh_token': refresh_token,
+                'username': current_user.username
                 })
         else:
             return jsonify({'message': 'Wrong credentials'})

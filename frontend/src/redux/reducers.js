@@ -5,7 +5,8 @@ const defaultState = {
   isFetching: false,
   authToken: '',
   refreshToken: '',
-  isAuthenticated: false
+  isAuthenticated: false,
+  username: ''
 }
 
 const loginReducer = (state = defaultState, action) => {
@@ -15,21 +16,24 @@ const loginReducer = (state = defaultState, action) => {
         isFetching: true,
         authToken: '',
         refreshToken: '',
-        isAuthenticated: false
+        isAuthenticated: false,
+        username: ''
       }
     case RECEIVE_LOGIN:
       return {
         isFetching: false,
         authToken: action.authToken,
         refreshToken: action.refreshToken,
-        isAuthenticated: true
+        isAuthenticated: true,
+        username: action.username
       }
     case LOGOUT:
       return {
         isFetching: false,
         authToken: '',
         refreshToken: '',
-        isAuthenticated: false
+        isAuthenticated: false,
+        username: ''
       }
     case UPDATE_AUTH_TOKEN:
       return (Object.assign(

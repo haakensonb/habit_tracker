@@ -12,11 +12,12 @@ export const sendLogin = () => {
 }
 
 
-export const receiveLogin = (authToken, refreshToken) => {
+export const receiveLogin = (authToken, refreshToken, username) => {
   return {
     type: RECEIVE_LOGIN,
     authToken: authToken,
-    refreshToken: refreshToken
+    refreshToken: refreshToken,
+    username: username
   }
 }
 
@@ -110,9 +111,11 @@ export const loginAsync = (username, password) => {
     .then(res => {
       const authToken = res.access_token;
       const refreshToken = res.refresh_token;
-      dispatch(receiveLogin(authToken, refreshToken));
+      const username = res.username;
+      dispatch(receiveLogin(authToken, refreshToken, username));
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('username', username);
       console.log(res)
     })
   }
