@@ -48,17 +48,20 @@ class HabitDetail extends Component {
 
   deleteHabit(event) {
     event.preventDefault();
-    fetch(this.url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.props.authToken}`
-      }
-    })
-    .then(() => {
-      // redirect back to habits page
-      this.props.history.push('/habits')
-    })
+    const confirmed = window.confirm("Are you sure you want to delete this habit?")
+    if (confirmed){
+      fetch(this.url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.props.authToken}`
+        }
+      })
+      .then(() => {
+        // redirect back to habits page
+        this.props.history.push('/habits')
+      })
+    }
 
   }
 
@@ -67,6 +70,7 @@ class HabitDetail extends Component {
       return (
         <EntryBox 
         status={entry.status}
+        key={entry.id}
         id={entry.id}
         entryDay={entry.entry_day}
         authToken={this.props.authToken}
