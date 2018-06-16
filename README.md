@@ -1,15 +1,12 @@
 # TODO:
 
-Add tests to make sure users can't view/edit/delete other's content
+Add test for frontend
 
-Remove react boilerplate code that isn't needed. Organize components/pages into folders
 
 Add some type of registration confirmation. Maybe use Flask-Mail?
 
 
-Add function to check if authToken is expired and refresh it. This could be called before any api function to make sure the token is still valid
-
-
+Why does the token sometimes not refresh?
 
 # Documentation
 
