@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import HabitsPage from './pages/HabitsPage';
 import LogoutPage from './pages/LogoutPage';
 import HabitDetailPage from './pages/HabitDetailPage';
+import HabitEditPage from './pages/HabitEditPage';
 import requireAuth from './utils/requireAuth';
 
 class App extends Component {
@@ -24,6 +25,7 @@ class App extends Component {
           <Route exact path="/login" component={LoginPage}/>
           <Route exact path="/habits" component={requireAuth(HabitsPage)}/>
           <Route exact path="/habit/:id" component={requireAuth(HabitDetailPage)} />
+          <Route exact path="/habit/edit/:id" component={requireAuth(HabitEditPage)} />
           <Route exact path="/logout" component={requireAuth(LogoutPage)}/>
         </Switch>
       </Router>

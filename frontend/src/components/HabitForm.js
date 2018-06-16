@@ -2,11 +2,11 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function NewHabitForm(props) {
+export default function HabitForm(props) {
   return (
     <div>
       <form onSubmit={props.handleSubmit}>
-        <h3>Add a new habit</h3>
+        <h3>{props.title}</h3>
 
         <label>
         Name:
@@ -32,7 +32,7 @@ export default function NewHabitForm(props) {
 
         <br />
 
-        <input type="submit" value="Add habit"/>
+        <input type="submit" value="Submit"/>
       </form>
     </div>
   );

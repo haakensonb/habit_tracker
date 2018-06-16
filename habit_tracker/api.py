@@ -93,7 +93,8 @@ class HabitsAPI(MethodView):
             new_data = habit_schema.load(request.json).data
             habit.name = new_data['name']
             habit.description = new_data['description']
-            habit.start_date = new_data['start_date']
+            # probably shouldn't be able to edit the start date
+            # habit.start_date = new_data['start_date']
             db.session.commit()
         else:
             return jsonify({'message': 'That\'s not yours to change!'})

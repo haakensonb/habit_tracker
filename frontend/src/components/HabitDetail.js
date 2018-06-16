@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import connect from 'react-redux/lib/connect/connect';
 import { withRouter } from 'react-router-dom';
 import EntryBox from './EntryBox';
+import Link from 'react-router-dom/Link';
 
 class HabitDetail extends Component {
   constructor(props) {
@@ -89,6 +90,8 @@ class HabitDetail extends Component {
     return (
       <div>
         <p>Habit: {this.state.name}</p>
+        <button><Link to={`/habit/edit/${this.id}`}>Edit this habit</Link></button>
+        <br />
         <button onClick={this.deleteHabit}>Delete this habit</button>
         {entries}
       </div>

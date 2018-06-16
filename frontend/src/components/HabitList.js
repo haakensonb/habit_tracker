@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Habit from './Habit'
 import { connect } from 'react-redux';
-import NewHabitForm from './NewHabitForm';
+import HabitForm from './HabitForm';
 import moment from 'moment';
 
 class HabitList extends Component {
@@ -95,7 +95,8 @@ class HabitList extends Component {
     return (
       <div>
 
-        <NewHabitForm
+        <HabitForm
+        title="Add a new habit"
         handleSubmit={this.handleSubmit}
         name={this.state.name}
         handleChange={this.handleChange}
