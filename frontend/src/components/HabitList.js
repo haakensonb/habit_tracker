@@ -87,6 +87,7 @@ class HabitList extends Component {
     const habits = this.state.habits.map((habit) => {
       return (<Habit 
         key={habit.id}
+        id={habit.id}
         name={habit.name}
         description={habit.description}/>
     )});
