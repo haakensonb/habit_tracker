@@ -54,13 +54,12 @@ class HabitList extends Component {
     })
     .then(res => res.json())
     .then(data => {
+      // have to use concat to add data to habits
+      // because react state is immutable
       const newData = this.state.habits.concat(data);
-      console.log(newData)
       this.setState({
         habits: newData
       })
-      console.log(data)
-      console.log(this.state)
     })
 
   }
