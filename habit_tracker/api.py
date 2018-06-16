@@ -47,11 +47,11 @@ class HabitsAPI(MethodView):
     @jwt_required
     def post(self):
         current_user = User.find_by_username(get_jwt_identity())
-        # the start date will just be the current time for now
-        # eventually it should be a value specified by the client
-        # client will send a string that will be parsed into a datetime obj
-        start_date = datetime.now()
         new_data = habit_schema.load(request.json).data
+        # i don't know why habit_schema sometimes doesn't load the date
+        # so lets just load it from the request for now
+        start_date = request.json['start_date']
+        start_date = datetime.strptime(start_date, '%m/%d/%Y')
         new_habit = Habit(
             name=new_data['name'],
             description=new_data['description'],

@@ -24,6 +24,10 @@ if (authToken && refreshToken && username) {
   store.dispatch(receiveLogin(authToken, refreshToken, username))
 }
 
+// need also to check if token has already expired on load
+// if user refreshes the page the setInterval will restart
+// so the token will end up expired before it counts to 14 and a half minutes
+
 // authTokens expire every 15 minutes
 // so every 14 and a half minutes (870000 milliseconds)
 // dispatch an action creator to get a refreshed token.

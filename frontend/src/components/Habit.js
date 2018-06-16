@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Habit(props) {
+export default function Habit(props) {
   return (
     <div>
       <p>Habit</p>
@@ -9,5 +9,3 @@ function Habit(props) {
     </div>
   );
 }
-
-export default Habit;

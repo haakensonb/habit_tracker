@@ -116,7 +116,8 @@ class EntrySchema(ma.Schema):
 
 class HabitSchema(ma.Schema):
     entries = fields.Nested(EntrySchema, many=True)
-    start_date = ma.DateTime()
+    # client sends value as a string so we will leave out this part for now
+    # start_date = ma.DateTime()
     class Meta:
         # have to remember to expose the field for entries
         fields = (
