@@ -9,7 +9,8 @@ class HabitDetail extends Component {
 
     this.state = {
       name: '',
-      entries: []
+      entries: [],
+      message: ''
     }
   }
 
@@ -28,11 +29,18 @@ class HabitDetail extends Component {
     .then((data) => {
       const newData = data.entries;
       console.log(newData);
-      this.setState({
-        entries: [...newData],
-        name: data.name
-      })
-      console.log(data)
+      if (newData){
+        this.setState({
+          entries: [...newData],
+          name: data.name
+        })
+        console.log(data)
+      } else{
+        this.setState({
+          message: data.message
+        })
+      }
+      
     })
   }
 
@@ -47,6 +55,14 @@ class HabitDetail extends Component {
         />
       );
     });
+
+    if (this.state.message) {
+      return (
+        <div>
+          ERROR: {this.state.message}
+        </div>
+      );
+    }
     
     return (
       <div>

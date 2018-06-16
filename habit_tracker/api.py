@@ -38,7 +38,9 @@ class HabitsAPI(MethodView):
         elif habit_id:
             # need to add some sort of error handling for when habit_id is out of range
             query = Habit.query.get(habit_id)
-            if query.user_id == current_user.id:
+            if query is None:
+                return jsonify({'message': 'Habit does not exist'})
+            elif query.user_id == current_user.id:
                 return habit_schema.jsonify(query)
             else:
                 return jsonify({'message': 'That\'s not yours!'})
