@@ -12,13 +12,15 @@ class HabitDetail extends Component {
       entries: [],
       message: ''
     }
+
+    this.id = this.props.match.params.id;
+    this.url = `http://127.0.0.1:5000/api/habits/${this.id}`;
+
+    this.deleteHabit = this.deleteHabit.bind(this);
   }
 
   componentDidMount() {
-    const id = this.props.match.params.id;
-    const url = `http://127.0.0.1:5000/api/habits/${id}`;
-    
-    fetch(url, {
+    fetch(this.url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -44,6 +46,22 @@ class HabitDetail extends Component {
     })
   }
 
+  deleteHabit(event) {
+    event.preventDefault();
+    fetch(this.url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.props.authToken}`
+      }
+    })
+    .then(() => {
+      // redirect back to habits page
+      this.props.history.push('/habits')
+    })
+
+  }
+
   render() {
     const entries = this.state.entries.map((entry) => {
       return (
@@ -67,6 +85,7 @@ class HabitDetail extends Component {
     return (
       <div>
         <p>Habit: {this.state.name}</p>
+        <button onClick={this.deleteHabit}>Delete this habit</button>
         {entries}
       </div>
     );
