@@ -64,7 +64,7 @@ class HabitEditPage extends Component {
       }
     })
     .then(() => {
-      this.props.history.push('/habits')
+      this.props.history.push(`/habit/${this.id}`)
     })
 
   }
