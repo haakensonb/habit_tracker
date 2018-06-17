@@ -89,7 +89,10 @@ class HabitList extends Component {
         key={habit.id}
         id={habit.id}
         name={habit.name}
-        description={habit.description}/>
+        description={habit.description}
+        entries={habit.entries}
+        startDate={moment(habit.start_date).format('L')}
+        />
     )});
 
     return (

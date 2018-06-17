@@ -10,6 +10,7 @@ class HabitDetail extends Component {
 
     this.state = {
       name: '',
+      description: '',
       entries: [],
       message: ''
     }
@@ -18,6 +19,7 @@ class HabitDetail extends Component {
     this.url = `http://127.0.0.1:5000/api/habits/${this.id}`;
 
     this.deleteHabit = this.deleteHabit.bind(this);
+    this.getHighestStreak = this.getHighestStreak.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +37,8 @@ class HabitDetail extends Component {
       if (newData){
         this.setState({
           entries: [...newData],
-          name: data.name
+          name: data.name,
+          description: data.description
         })
         console.log(data)
       } else{
@@ -66,6 +69,22 @@ class HabitDetail extends Component {
 
   }
 
+  getHighestStreak(entries) {
+    let streak = 0;
+    let highestStreak = 0;
+    entries.forEach((entry) => {
+      if (entry.status === 'complete'){
+        streak += 1;
+        if (streak > highestStreak){
+          highestStreak = streak;
+        }
+      } else {
+        streak = 0;
+      }
+    });
+    return highestStreak;
+  }
+
   render() {
     const entries = this.state.entries.map((entry) => {
       return (
@@ -79,6 +98,7 @@ class HabitDetail extends Component {
       );
     });
 
+
     if (this.state.message) {
       return (
         <div>
@@ -90,6 +110,8 @@ class HabitDetail extends Component {
     return (
       <div>
         <p>Habit: {this.state.name}</p>
+        <p>description: {this.state.description}</p>
+        <p>Highest Streak: {this.getHighestStreak(this.state.entries)}</p>
         <button><Link to={`/habit/edit/${this.id}`}>Edit this habit</Link></button>
         <br />
         <button onClick={this.deleteHabit}>Delete this habit</button>
