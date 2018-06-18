@@ -4,7 +4,7 @@ import Link from 'react-router-dom/Link';
 export default function Habit(props) {
 
   const daysComplete = props.entries.filter((entry) => {
-    return entry.status === 'complete'
+    return entry.status === 'X'
   }).length;
 
   // in this case I will round up rather than down because I'm not sure it matters

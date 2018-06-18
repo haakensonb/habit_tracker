@@ -81,7 +81,7 @@ class Habit(db.Model):
         for x in range(49):
             entry = Entry(
                 entry_day=date,
-                status='empty',
+                status=' ',
                 habit_id=self.id,
                 user_id=user.id
             )
@@ -95,6 +95,7 @@ class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     entry_day = db.Column(db.DateTime)
     # status can be 'empty', 'failed', 'complete'
+    # this will be represented by ' ', 'O', 'X' respectively
     status = db.Column(db.String(80))
     habit_id = db.Column(db.Integer, db.ForeignKey('habit.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

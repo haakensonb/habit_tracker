@@ -86,7 +86,7 @@ class HabitDetail extends Component {
     let streak = 0;
     let highestStreak = 0;
     entries.forEach((entry) => {
-      if (entry.status === 'complete'){
+      if (entry.status === 'X'){
         streak += 1;
         if (streak > highestStreak){
           highestStreak = streak;

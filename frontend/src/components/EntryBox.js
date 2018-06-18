@@ -43,12 +43,12 @@ class EntryBox extends Component {
 
   toggleStatus(event) {
     event.preventDefault();
-    if (this.state.status === 'complete'){
-      this.changeEntry('failed');
-    } else if (this.state.status === 'failed') {
-      this.changeEntry('empty');
-    } else if (this.state.status === 'empty'){
-      this.changeEntry('complete');
+    if (this.state.status === 'X'){
+      this.changeEntry('O');
+    } else if (this.state.status === 'O') {
+      this.changeEntry(' ');
+    } else if (this.state.status === ' '){
+      this.changeEntry('X');
     }
   }
   
