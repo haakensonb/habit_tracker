@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { rootReducer } from './redux/reducers'
 import thunk from 'redux-thunk'
-import { receiveLogin, useRefreshToUpdateAuth } from './redux/actions';
+import { receiveData, useRefreshToUpdateAuth } from './redux/actions';
 import isExpired from './utils/isExpired';
 
 export const store = createStore(
@@ -22,7 +22,7 @@ const username = localStorage.getItem('username');
 // If they are we need to place them in the store.
 // This makes sure that the user will stay logged in if they refresh the page
 if (authToken && refreshToken && username) {
-  store.dispatch(receiveLogin(authToken, refreshToken, username))
+  store.dispatch(receiveData(authToken, refreshToken, username))
 
   // need also to check if token has already expired on load
   // if user refreshes the page the setInterval will restart
