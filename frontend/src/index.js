@@ -45,8 +45,8 @@ setInterval(
   () => {
     const currState = store.getState();
     // console.log(currState)
-    const refreshToken = currState.loginReducer.refreshToken;
-    const isAuthenticated = currState.loginReducer.isAuthenticated;
+    const refreshToken = currState.authReducer.refreshToken;
+    const isAuthenticated = currState.authReducer.isAuthenticated;
     // check first to make sure that there is a refresh token
     // and that the user is logged in, so that this doesn't
     // run and fail on unathenticated pages (like the homepage)
