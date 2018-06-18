@@ -36,6 +36,8 @@ class EntryBox extends Component {
       this.setState({
         status: data.status
       })
+      // this will update the state of the entries on the HabitDetail component
+      this.props.updateEntriesState(this.props.id, data.status)
     })
   }
 

@@ -20,6 +20,7 @@ class HabitDetail extends Component {
 
     this.deleteHabit = this.deleteHabit.bind(this);
     this.getHighestStreak = this.getHighestStreak.bind(this);
+    this.updateEntriesState = this.updateEntriesState.bind(this);
   }
 
   componentDidMount() {
@@ -69,6 +70,18 @@ class HabitDetail extends Component {
 
   }
 
+  // this can be passed down into EntryBox so that when an entry's status is updated
+  // the status of that entry will also be updated on this component
+  // status needs to be known to this component so that a streak can be calculated
+  updateEntriesState(id, newStatus) {
+    const entryId = this.state.entries.findIndex(x => x.id === id);
+    let newEntries = this.state.entries;
+    newEntries[entryId].status = newStatus;
+    this.setState({
+      entries: newEntries
+    })
+  }
+
   getHighestStreak(entries) {
     let streak = 0;
     let highestStreak = 0;
@@ -86,6 +99,8 @@ class HabitDetail extends Component {
   }
 
   render() {
+    console.log(this.state.entries)
+
     const entries = this.state.entries.map((entry) => {
       return (
         <EntryBox 
@@ -94,6 +109,7 @@ class HabitDetail extends Component {
         id={entry.id}
         entryDay={entry.entry_day}
         authToken={this.props.authToken}
+        updateEntriesState={this.updateEntriesState}
         />
       );
     });
