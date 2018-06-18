@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { registerAync } from '../redux/actions';
+import { setAuthData } from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -27,10 +27,11 @@ class RegistrationForm extends Component {
   }
 
   handleSubmit(event) {
+    const url = 'http://127.0.0.1:5000/auth/registration';
     if (this.state.password === this.state.passwordConfirm) {
-      this.props.register(this.state.username, this.state.password);
+      this.props.register(url, this.state.username, this.state.password);
     } else {
-      console.log("Passwords don't match");
+      window.alert("Passwords don't match");
     }
     event.preventDefault();
   }
@@ -71,14 +72,14 @@ class RegistrationForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isFetching: state.loginReducer.isFetching,
-    isAuthenticated: state.loginReducer.isAuthenticated
+    isFetching: state.authReducer.isFetching,
+    isAuthenticated: state.authReducer.isAuthenticated
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: (username, password) => dispatch(registerAync(username, password))
+    register: (url, username, password) => dispatch(setAuthData(url, username, password))
   }
 }
 

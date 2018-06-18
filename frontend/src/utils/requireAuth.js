@@ -31,7 +31,7 @@ export default function requireAuth (WrappedComponent) {
   // and then map it to the prop isAuthenticated
   const mapStateToProps = (state) => {
     return {
-      isAuthenticated: state.loginReducer.isAuthenticated
+      isAuthenticated: state.authReducer.isAuthenticated
     }
   }
 

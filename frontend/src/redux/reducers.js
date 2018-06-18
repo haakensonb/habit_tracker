@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SEND_LOGIN, RECEIVE_LOGIN, LOGOUT, UPDATE_AUTH_TOKEN } from "./actions";
+import { SEND_DATA, RECEIVE_DATA, LOGOUT, UPDATE_AUTH_TOKEN } from "./actions";
 
 const defaultState = {
   isFetching: false,
@@ -9,9 +9,9 @@ const defaultState = {
   username: ''
 }
 
-const loginReducer = (state = defaultState, action) => {
+const authReducer = (state = defaultState, action) => {
   switch (action.type) {
-    case SEND_LOGIN:
+    case SEND_DATA:
       return {
         isFetching: true,
         authToken: '',
@@ -19,7 +19,7 @@ const loginReducer = (state = defaultState, action) => {
         isAuthenticated: false,
         username: ''
       }
-    case RECEIVE_LOGIN:
+    case RECEIVE_DATA:
       return {
         isFetching: false,
         authToken: action.authToken,
@@ -48,5 +48,5 @@ const loginReducer = (state = defaultState, action) => {
 }
 
 export const rootReducer = combineReducers({
-  loginReducer
+  authReducer
 })

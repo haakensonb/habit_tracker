@@ -25,8 +25,8 @@ class LogoutPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authToken: state.loginReducer.authToken,
-    refreshToken: state.loginReducer.refreshToken
+    authToken: state.authReducer.authToken,
+    refreshToken: state.authReducer.refreshToken
   }
 }
 

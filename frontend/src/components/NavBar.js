@@ -45,8 +45,8 @@ const LoggedInLinks = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: state.loginReducer.isAuthenticated,
-    username: state.loginReducer.username
+    isAuthenticated: state.authReducer.isAuthenticated,
+    username: state.authReducer.username
   }
 }
 

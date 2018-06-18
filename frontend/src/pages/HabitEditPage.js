@@ -93,7 +93,7 @@ class HabitEditPage extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authToken: state.loginReducer.authToken
+    authToken: state.authReducer.authToken
   }
 }
 

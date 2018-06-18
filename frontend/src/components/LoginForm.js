@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { loginAsync} from '../redux/actions';
+import { setAuthData} from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -26,7 +26,8 @@ class LoginForm extends Component {
     }
   
     handleSubmit(event) {
-      this.props.login(this.state.username, this.state.password)
+      const url = 'http://127.0.0.1:5000/auth/login';
+      this.props.login(url, this.state.username, this.state.password)
       event.preventDefault();
     }
   
@@ -61,14 +62,14 @@ class LoginForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isFetching: state.loginReducer.isFetching,
-    isAuthenticated: state.loginReducer.isAuthenticated
+    isFetching: state.authReducer.isFetching,
+    isAuthenticated: state.authReducer.isAuthenticated
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    login: (username, password) => dispatch(loginAsync(username, password))
+    login: (url, username, password) => dispatch(setAuthData(url, username, password))
   }
 }
   

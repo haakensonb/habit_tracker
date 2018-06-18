@@ -1,21 +1,19 @@
-export const SEND_LOGIN = 'SEND_LOGIN';
-export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
+export const SEND_DATA = 'SEND_DATA';
+export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
 
-// need to rename because some of these functions are being used for multiple things
-// this isn't DRY, could be cleaned up and renamed
 
-export const sendLogin = () => {
+export const sendData = () => {
   return {
-    type: SEND_LOGIN
+    type: SEND_DATA
   }
 }
 
 
-export const receiveLogin = (authToken, refreshToken, username) => {
+export const receiveData = (authToken, refreshToken, username) => {
   return {
-    type: RECEIVE_LOGIN,
+    type: RECEIVE_DATA,
     authToken: authToken,
     refreshToken: refreshToken,
     username: username
@@ -93,44 +91,14 @@ export const useRefreshToUpdateAuth = (refreshToken) => {
 }
 
 
-export const loginAsync = (username, password) => {
-  const url = 'http://127.0.0.1:5000/auth/login';
+export const setAuthData = (url, username, password) => {
   const data = {
     username: username,
     password: password
   };
 
   return (dispatch) => {
-    dispatch(sendLogin());
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then( res => res.json())
-    .then(res => {
-      const authToken = res.access_token;
-      const refreshToken = res.refresh_token;
-      const username = res.username;
-      dispatch(receiveLogin(authToken, refreshToken, username));
-      localStorage.setItem('authToken', authToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('username', username);
-      console.log(res)
-    })
-  }
-}
-
-// this needs to be refactored into loginAsync
-export const registerAync = (username, password) => {
-  return (dispatch) => {
-    const url = 'http://127.0.0.1:5000/auth/registration';
-    const data = {
-      username: username,
-      password: password
-    }
-    dispatch(sendLogin());
+    dispatch(sendData());
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
@@ -138,16 +106,16 @@ export const registerAync = (username, password) => {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => res.json())
+    .then( res => res.json())
     .then(data => {
       const authToken = data.access_token;
       const refreshToken = data.refresh_token;
       const username = data.username;
-      dispatch(receiveLogin(authToken, refreshToken, username));
+      dispatch(receiveData(authToken, refreshToken, username));
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('username', username);
-      console.log(data)
+      console.log(data);
     })
   }
 }
