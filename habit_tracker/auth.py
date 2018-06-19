@@ -19,7 +19,8 @@ class UserRegistration(MethodView):
             password=User.generate_hash(user_data['password'])
         )
         if User.find_by_username(user_data['username']):
-            return jsonify({'message': 'user {} already exists'.format(user_data['username'])})
+            # user already exists so raise some sort of error
+            return abort(422)
 
         new_user.save()
         access_token = create_access_token(identity=user_data['username'])
@@ -65,9 +66,7 @@ class UserLogoutAccess(MethodView):
                 'message': 'Access token has been revoked'
             })
         except:
-            return jsonify({
-                'message': 'Something went wrong'
-            }), 500
+            return abort(401)
 
 
 class UserLogoutRefresh(MethodView):
@@ -81,9 +80,7 @@ class UserLogoutRefresh(MethodView):
                 'message': 'Refresh token has been revoked'
             })
         except:
-            return jsonify({
-                'message': 'Something when wrong'
-            }), 500
+            return abort(401)
 
 
 class TokenRefresh(MethodView):

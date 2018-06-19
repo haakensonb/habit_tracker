@@ -124,7 +124,7 @@ export const setAuthData = (url, username, password) => {
     })
     .then( res => {
       if (!res.ok){
-        throw Error();
+        throw Error(res.status);
       }
       return res.json();
     })
@@ -138,10 +138,10 @@ export const setAuthData = (url, username, password) => {
       localStorage.setItem('username', username);
       toast.success(`Hi ${data.username}!`)
     })
-    .catch(() => {
+    .catch((error) => {
       // user failed to login so make sure then are logged out and not authenticated
       dispatch(logoutUser());
-      toast.error("Login failed");
+      toast.error("Something went wrong");
     })
   }
 }
