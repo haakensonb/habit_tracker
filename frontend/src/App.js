@@ -28,7 +28,7 @@ class App extends Component {
           <Route exact path="/habits" component={requireAuth(HabitsPage)}/>
           <Route exact path="/habit/:id" component={requireAuth(HabitDetailPage)} />
           <Route exact path="/habit/edit/:id" component={requireAuth(HabitEditPage)} />
-          <Route exact path="/logout" component={requireAuth(LogoutPage)}/>
+          <Route exact path="/logout" component={LogoutPage}/>
         </Switch>
       </Router>
     );

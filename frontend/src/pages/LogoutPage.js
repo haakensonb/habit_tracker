@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { logoutUser, logoutUserFromApi } from '../redux/actions';
-import Redirect from 'react-router-dom/Redirect';
 import connect from 'react-redux/lib/connect/connect';
+import { ToastContainer} from 'react-toastify';
+import NavBar from '../components/NavBar';
+import Link from 'react-router-dom/Link';
 
 class LogoutPage extends Component {
   componentWillMount(){
@@ -18,7 +20,13 @@ class LogoutPage extends Component {
 
   render() {
     return (
-      <Redirect to="/" />
+      <div>
+        <NavBar />
+        <ToastContainer />
+
+        <h3>You are logged out</h3>
+        <p><Link to='/'>Return to the homepage</Link></p>
+      </div>
     )
   }
 }

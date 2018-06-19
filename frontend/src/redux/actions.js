@@ -37,23 +37,33 @@ export const logoutUserFromApi = (authToken, refreshToken) => {
     // have to make two seperate api calls here
     // one to logout the auth token and one for the refresh token
 
-    // we don't actually have to do anything to handle the return message until
-    // we add a flash message system
-    fetch(authUrl, {
+    let authPromise = fetch(authUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`
       }
-    })
+    });
 
-    fetch(refreshUrl, {
+    let refreshPromise = fetch(refreshUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${refreshToken}`
       }
-    })
+    });
+
+    return Promise.all([authPromise, refreshPromise])
+      .then((res) => {
+        if (res.ok){
+          toast.success("Successfully logged out")
+        } else {
+          toast.error("Something went wrong")
+        }
+      })
+      .catch(() => {
+        toast.error("Something went wrong. You may not have been logged out properly.")
+      })
 
   }
 }
