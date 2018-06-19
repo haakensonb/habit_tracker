@@ -39,7 +39,7 @@ class UserLogin(MethodView):
         if not current_user:
             return jsonify({'message': 'User {} doesn\'t exist'.format(user_data['username'])})
 
-        if User.verify_hash(user_data['password'], current_user.password):
+        if User.verify_hash(current_user.password, user_data['password']):
             access_token = create_access_token(identity=user_data['username'])
             refresh_token = create_refresh_token(identity=user_data['username'])
 

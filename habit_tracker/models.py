@@ -1,11 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from marshmallow import fields
-from passlib.hash import pbkdf2_sha256 as sha256
+from flask_bcrypt import Bcrypt
 from datetime import timedelta
 
 db = SQLAlchemy()
 ma = Marshmallow()
+bcrypt = Bcrypt()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,12 +26,12 @@ class User(db.Model):
 
     @staticmethod
     def generate_hash(password):
-        return sha256.hash(password)
+        return bcrypt.generate_password_hash(password).decode('utf-8')
     
 
     @staticmethod
-    def verify_hash(password, hash):
-        return sha256.verify(password, hash)
+    def verify_hash(hash, password):
+        return bcrypt.check_password_hash(hash, password)
 
 
     def __repr__(self):

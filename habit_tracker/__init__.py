@@ -18,9 +18,13 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    from habit_tracker.models import db, ma
+    from habit_tracker.models import db, ma, bcrypt
+    # setup sqlalchemy
     db.init_app(app)
+    # setup marshmallow
     ma.init_app(app)
+    # setup hashing
+    bcrypt.init_app(app)
 
     app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
     app.config['JWT_BLACKLIST_ENABLED'] = True
