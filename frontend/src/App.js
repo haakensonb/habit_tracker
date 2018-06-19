@@ -14,6 +14,8 @@ import HabitDetailPage from './pages/HabitDetailPage';
 import HabitEditPage from './pages/HabitEditPage';
 import requireAuth from './utils/requireAuth';
 
+import 'react-toastify/dist/ReactToastify.min.css';
+
 class App extends Component {
 
   render() {

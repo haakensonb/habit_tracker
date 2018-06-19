@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const SEND_DATA = 'SEND_DATA';
 export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const LOGOUT = 'LOGOUT';
@@ -115,6 +117,7 @@ export const setAuthData = (url, username, password) => {
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('username', username);
+      toast.success(`Hi ${data.username}!`)
       console.log(data);
     })
   }
