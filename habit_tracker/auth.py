@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, request, jsonify
+    Blueprint, request, jsonify, abort
 )
 from flask.views import MethodView
 from habit_tracker.models import user_schema, User, RevokedToken
@@ -36,8 +36,9 @@ class UserLogin(MethodView):
     def post(self):
         user_data = user_schema.load(request.json).data
         current_user = User.find_by_username(user_data['username'])
+        # if we can't find that user return error
         if not current_user:
-            return jsonify({'message': 'User {} doesn\'t exist'.format(user_data['username'])})
+            return abort(401)
 
         if User.verify_hash(current_user.password, user_data['password']):
             access_token = create_access_token(identity=user_data['username'])
@@ -50,7 +51,7 @@ class UserLogin(MethodView):
                 'username': current_user.username
                 })
         else:
-            return jsonify({'message': 'Wrong credentials'})
+            return abort(401)
 
 
 class UserLogoutAccess(MethodView):

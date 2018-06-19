@@ -58,11 +58,11 @@ export const logoutUserFromApi = (authToken, refreshToken) => {
         if (res.ok){
           toast.success("Successfully logged out")
         } else {
-          toast.error("Something went wrong")
+          toast.error("Either you were already logged out or something went wrong")
         }
       })
       .catch(() => {
-        toast.error("Something went wrong. You may not have been logged out properly.")
+        toast.error("Either you were already logged out or something went wrong")
       })
 
   }
@@ -88,16 +88,20 @@ export const useRefreshToUpdateAuth = (refreshToken) => {
         'Authorization': `Bearer ${refreshToken}`
       }
     })
-    .then(res => res.json())
+    .then(res => {
+      // if the response isn't ok throw an error
+      if (!res.ok) {
+        throw Error()
+      }
+      return res.json();
+    })
     .then(data => {
       dispatch(updateAuthToken(data.access_token));
-      // make sure token actually came back before assigning
-      // so that authToken isn't accidentally set to undefined
-      // this should probably be made more robust in the future
-      if (data.access_token !== undefined){
-        localStorage.setItem('authToken', data.access_token);
-      }
-      // console.log(data);
+    })
+    .catch(() => {
+      // dispatch logout to make sure user is not authenticated
+      dispatch(logoutUser());
+      toast.error("Not able to stay logged in. Try logging out and logging in again.");
     })
   }
 }
@@ -118,7 +122,12 @@ export const setAuthData = (url, username, password) => {
         'Content-Type': 'application/json'
       }
     })
-    .then( res => res.json())
+    .then( res => {
+      if (!res.ok){
+        throw Error();
+      }
+      return res.json();
+    })
     .then(data => {
       const authToken = data.access_token;
       const refreshToken = data.refresh_token;
@@ -128,7 +137,11 @@ export const setAuthData = (url, username, password) => {
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('username', username);
       toast.success(`Hi ${data.username}!`)
-      console.log(data);
+    })
+    .catch(() => {
+      // user failed to login so make sure then are logged out and not authenticated
+      dispatch(logoutUser());
+      toast.error("Login failed");
     })
   }
 }
