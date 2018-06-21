@@ -7,8 +7,10 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { rootReducer } from './redux/reducers'
 import thunk from 'redux-thunk'
-import { receiveData, useRefreshToUpdateAuth } from './redux/actions';
+import { receiveData, updateAuthToken } from './redux/actions';
 import isExpired from './utils/isExpired';
+import axios from 'axios';
+import issueToken from './utils/issueToken';
 
 export const store = createStore(
     rootReducer,
@@ -28,32 +30,37 @@ if (authToken && refreshToken && username) {
   // if user refreshes the page the setInterval will restart
   // so the token will end up expired before it counts to 14 and a half minutes
   if (isExpired(authToken)){
-    store.dispatch(useRefreshToUpdateAuth(refreshToken))
+    issueToken().then((newAuthToken) => {
+      store.dispatch(updateAuthToken(newAuthToken))
+    })
   }
 }
 
 
+// axios will run this before every request to make sure that the authToken is not expired
+axios.interceptors.request.use((config) => {
+  let originalRequest = config;
+  const loginUrl = 'http://127.0.0.1:5000/auth/login';
+  const authToken = store.getState().authReducer.authToken;
 
-// authTokens expire every 15 minutes
-// so every 14 and a half minutes (870000 milliseconds)
-// dispatch an action creator to get a refreshed token.
-// This function is called 30 seconds before expiration so that there is plenty of time
-// for the server to process the request and respond with the new token.
-// This way the user (probably) won't be caught in a state where there is an error
-// because they have an expired token and are waiting for a new one
-setInterval(
-  () => {
-    const currState = store.getState();
-    // console.log(currState)
-    const refreshToken = currState.authReducer.refreshToken;
-    const isAuthenticated = currState.authReducer.isAuthenticated;
-    // check first to make sure that there is a refresh token
-    // and that the user is logged in, so that this doesn't
-    // run and fail on unathenticated pages (like the homepage)
-    if (refreshToken && isAuthenticated) {
-      store.dispatch(useRefreshToUpdateAuth(refreshToken))
-    }
-  }, 870000);
+  // if the token is expired and we are not trying to login
+  if (isExpired(authToken) && config.url !== loginUrl) {
+    // then issueToken will return a new auth token
+    return issueToken().then((newAuthToken) => {
+      // the old request has it's authToken replaced with the new one
+      originalRequest['Authorization'] = `Bearer ${newAuthToken}`
+      // also add this updated token to the redux store
+      store.dispatch(updateAuthToken(newAuthToken));
+      // then send the request on it's way with the updated token
+      return Promise.resolve(originalRequest);
+    });
+  }
+  // if the authToken isn't expired we don't have to do anything
+  return config;
+}, (err) => {
+  return Promise.reject(err);
+})
+
 
 ReactDOM.render(
   // wrap entire app in provider and pass in redux's store

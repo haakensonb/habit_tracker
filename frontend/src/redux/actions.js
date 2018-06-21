@@ -77,34 +77,34 @@ export const updateAuthToken = (authToken) => {
 }
 
 
-export const useRefreshToUpdateAuth = (refreshToken) => {
-  const url = 'http://127.0.0.1:5000/auth/token/refresh';
+// export const useRefreshToUpdateAuth = (refreshToken) => {
+//   const url = 'http://127.0.0.1:5000/auth/token/refresh';
 
-  return (dispatch) => {
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${refreshToken}`
-      }
-    })
-    .then(res => {
-      // if the response isn't ok throw an error
-      if (!res.ok) {
-        throw Error()
-      }
-      return res.json();
-    })
-    .then(data => {
-      dispatch(updateAuthToken(data.access_token));
-    })
-    .catch(() => {
-      // dispatch logout to make sure user is not authenticated
-      dispatch(logoutUser());
-      toast.error("Not able to stay logged in. Try logging out and logging in again.");
-    })
-  }
-}
+//   return (dispatch) => {
+//     fetch(url, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${refreshToken}`
+//       }
+//     })
+//     .then(res => {
+//       // if the response isn't ok throw an error
+//       if (!res.ok) {
+//         throw Error()
+//       }
+//       return res.json();
+//     })
+//     .then(data => {
+//       dispatch(updateAuthToken(data.access_token));
+//     })
+//     .catch(() => {
+//       // dispatch logout to make sure user is not authenticated
+//       dispatch(logoutUser());
+//       toast.error("Not able to stay logged in. Try logging out and logging in again.");
+//     })
+//   }
+// }
 
 
 export const setAuthData = (url, username, password) => {

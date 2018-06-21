@@ -3,6 +3,7 @@ import Habit from './Habit'
 import { connect } from 'react-redux';
 import HabitForm from './HabitForm';
 import moment from 'moment';
+import axios from 'axios';
 
 class HabitList extends Component {
   constructor(props) {
@@ -67,19 +68,22 @@ class HabitList extends Component {
   componentDidMount() {
     const url = 'http://127.0.0.1:5000/api/habits/';
     
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.props.authToken}`
-      }
-    })
-    .then(res => res.json())
-    .then((data) => {
+    // fetch(url, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${this.props.authToken}`
+    //   }
+    // })
+    // .then(res => res.json())
+    axios.get(url, {headers:{
+      'Authorization': `Bearer ${this.props.authToken}`
+    }})
+    .then((res) => {
       this.setState({
-        habits: [...data]
+        habits: [...res.data]
       })
-      console.log(data)
+      console.log(res)
     })
   }
 
