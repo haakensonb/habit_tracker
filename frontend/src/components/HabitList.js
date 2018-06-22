@@ -3,7 +3,7 @@ import Habit from './Habit'
 import { connect } from 'react-redux';
 import HabitForm from './HabitForm';
 import moment from 'moment';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance';
 
 class HabitList extends Component {
   constructor(props) {
@@ -76,10 +76,7 @@ class HabitList extends Component {
     //   }
     // })
     // .then(res => res.json())
-    axios.get(url, {headers:{
-      'Authorization': `Bearer ${this.props.authToken}`
-    }})
-    .then((res) => {
+    axiosInstance.get(url).then((res) => {
       this.setState({
         habits: [...res.data]
       })
