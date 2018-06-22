@@ -19,15 +19,6 @@ const username = localStorage.getItem('username');
 // This makes sure that the user will stay logged in if they refresh the page
 if (authToken && refreshToken && username) {
   store.dispatch(receiveData(authToken, refreshToken, username))
-
-  // need also to check if token has already expired on load
-  // if user refreshes the page the setInterval will restart
-  // so the token will end up expired before it counts to 14 and a half minutes
-  if (isExpired(authToken)){
-    issueToken(refreshToken).then((newAuthToken) => {
-      store.dispatch(updateAuthToken(newAuthToken))
-    })
-  }
 }
 
 
