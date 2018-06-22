@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import Habit from './Habit'
-import { connect } from 'react-redux';
 import HabitForm from './HabitForm';
 import moment from 'moment';
 import axiosInstance from '../utils/axiosInstance';
@@ -44,7 +43,6 @@ class HabitList extends Component {
       description: this.state.description,
       start_date: this.state.startDate.format('L')
     }
-    const authToken = this.props.authToken;
     axiosInstance.post(url, data).then(res => {
       // have to use concat to add data to habits
       // because react state is immutable
@@ -98,11 +96,5 @@ class HabitList extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    authToken: state.authReducer.authToken
-  }
-}
 
-
-export default connect(mapStateToProps)(HabitList)
+export default HabitList;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import connect from 'react-redux/lib/connect/connect';
 import { withRouter } from 'react-router-dom';
 import EntryBox from './EntryBox';
 import Link from 'react-router-dom/Link';
+import axiosInstance from '../utils/axiosInstance';
 
 class HabitDetail extends Component {
   constructor(props) {
@@ -24,27 +24,19 @@ class HabitDetail extends Component {
   }
 
   componentDidMount() {
-    fetch(this.url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.props.authToken}`
-      }
-    })
-    .then(res => res.json())
-    .then((data) => {
-      const newData = data.entries;
+    axiosInstance.get(this.url).then((res) => {
+      const newData = res.data.entries;
       console.log(newData);
       if (newData){
         this.setState({
           entries: [...newData],
-          name: data.name,
-          description: data.description
+          name: res.data.name,
+          description: res.data.description
         })
-        console.log(data)
+        console.log(res.data)
       } else{
         this.setState({
-          message: data.message
+          message: res.data.message
         })
       }
       
@@ -55,14 +47,7 @@ class HabitDetail extends Component {
     event.preventDefault();
     const confirmed = window.confirm("Are you sure you want to delete this habit?")
     if (confirmed){
-      fetch(this.url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.props.authToken}`
-        }
-      })
-      .then(() => {
+      axiosInstance.delete(this.url).then(() => {
         // redirect back to habits page
         this.props.history.push('/habits')
       })
@@ -108,7 +93,6 @@ class HabitDetail extends Component {
         key={entry.id}
         id={entry.id}
         entryDay={entry.entry_day}
-        authToken={this.props.authToken}
         updateEntriesState={this.updateEntriesState}
         />
       );
@@ -137,13 +121,8 @@ class HabitDetail extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    authToken: state.authReducer.authToken
-  }
-}
 
 // need to use withRouter so that we have access to url parameters in react router
 export default withRouter(
-  connect(mapStateToProps)(HabitDetail)
+  HabitDetail
 );

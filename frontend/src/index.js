@@ -4,9 +4,7 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux'
-import { receiveData, updateAuthToken } from './redux/actions';
-import isExpired from './utils/isExpired';
-import issueToken from './utils/issueToken';
+import { receiveData } from './redux/actions';
 import { store } from './redux/store';
 
 

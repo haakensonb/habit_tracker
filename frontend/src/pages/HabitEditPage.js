@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import NavBar from '../components/NavBar';
-import { connect } from 'react-redux';
+import axiosInstance from '../utils/axiosInstance';
 
 class HabitEditPage extends Component {
   constructor(props) {
@@ -20,20 +20,12 @@ class HabitEditPage extends Component {
   }
 
   componentDidMount() {
-    fetch(this.url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.props.authToken}`
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
+    axiosInstance.get(this.url).then(res => {
       this.setState({
-        name: data.name,
-        description: data.description
+        name: res.data.name,
+        description: res.data.description
       })
-      console.log(data)
+      console.log(res.data)
     })
 
   }
@@ -55,15 +47,7 @@ class HabitEditPage extends Component {
       description: this.state.description,
       start_date: this.state.startDate
     }
-    fetch(this.url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.props.authToken}`
-      }
-    })
-    .then(() => {
+    axiosInstance.put(this.url, data).then(() => {
       this.props.history.push(`/habit/${this.id}`)
     })
 
@@ -91,10 +75,4 @@ class HabitEditPage extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    authToken: state.authReducer.authToken
-  }
-}
-
-export default connect(mapStateToProps)(HabitEditPage);
+export default HabitEditPage;

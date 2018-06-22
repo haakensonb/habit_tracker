@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import axiosInstance from '../utils/axiosInstance';
 
 class EntryBox extends Component {
   constructor(props) {
@@ -21,23 +22,14 @@ class EntryBox extends Component {
       status: newStatus,
       entry_day: this.props.entryDay
     }
-    fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.props.authToken}`
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      // console.log(data)
+
+    axiosInstance.put(url, data).then(res => {
       
       this.setState({
-        status: data.status
+        status: res.data.status
       })
       // this will update the state of the entries on the HabitDetail component
-      this.props.updateEntriesState(this.props.id, data.status)
+      this.props.updateEntriesState(this.props.id, res.data.status)
     })
   }
 
