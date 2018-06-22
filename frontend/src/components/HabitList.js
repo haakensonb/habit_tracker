@@ -3,6 +3,7 @@ import Habit from './Habit'
 import HabitForm from './HabitForm';
 import moment from 'moment';
 import axiosInstance from '../utils/axiosInstance';
+import { toast } from 'react-toastify';
 
 class HabitList extends Component {
   constructor(props) {
@@ -50,6 +51,7 @@ class HabitList extends Component {
       this.setState({
         habits: newData
       })
+      toast.success('Habit added')
     })
 
   }

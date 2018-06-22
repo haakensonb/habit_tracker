@@ -3,6 +3,7 @@ import isExpired from './isExpired';
 import issueToken from './issueToken';
 import { updateAuthToken } from '../redux/actions';
 import { store } from '../redux/store';
+import { toast } from 'react-toastify';
 
 // create an instance of axios so that global settings can be changed
 // and persist across multiple pages
@@ -38,6 +39,15 @@ axiosInstance.interceptors.request.use((config) => {
   }
   return config;
 }, (err) => {
+  return Promise.reject(err);
+})
+
+// anytime the server sends a response that isn't ok
+// just show a generic error for the user
+axiosInstance.interceptors.response.use((response) => {
+  return response;
+}, (err) => {
+  toast.error('Something went wrong')
   return Promise.reject(err);
 })
 
