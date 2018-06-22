@@ -5,12 +5,15 @@ import axios from 'axios';
 // of the axiosInstance config
 export default function issueToken(refreshToken) {
   const url = 'http://127.0.0.1:5000/auth/token/refresh';
-  const config = {
+  
+  return axios({
+    method:'post',
+    url: url,
     headers: {
       'Authorization': `Bearer ${refreshToken}`
     }
-  };
-  return axios.post(url, config).then((res) => {
+  }).then((res) => {
+    console.log(res)
     return res.data.access_token;
   });
 }

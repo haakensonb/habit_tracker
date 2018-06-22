@@ -20,9 +20,13 @@ axiosInstance.interceptors.request.use((config) => {
     // then issueToken will return a new auth token
     return issueToken(refreshToken).then((newAuthToken) => {
       // the old request has it's authToken replaced with the new one
-      originalRequest['Authorization'] = `Bearer ${newAuthToken}`
+      originalRequest.headers = {
+        'Authorization': `Bearer ${newAuthToken}`,
+        'Content-Type': 'application/json'
+      }
       // also add this updated token to the redux store
       store.dispatch(updateAuthToken(newAuthToken));
+      console.log(originalRequest)
       // then send the request on it's way with the updated token
       return Promise.resolve(originalRequest);
     });

@@ -45,19 +45,10 @@ class HabitList extends Component {
       start_date: this.state.startDate.format('L')
     }
     const authToken = this.props.authToken;
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
+    axiosInstance.post(url, data).then(res => {
       // have to use concat to add data to habits
       // because react state is immutable
-      const newData = this.state.habits.concat(data);
+      const newData = this.state.habits.concat(res.data);
       this.setState({
         habits: newData
       })
@@ -67,15 +58,7 @@ class HabitList extends Component {
 
   componentDidMount() {
     const url = 'http://127.0.0.1:5000/api/habits/';
-    
-    // fetch(url, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': `Bearer ${this.props.authToken}`
-    //   }
-    // })
-    // .then(res => res.json())
+
     axiosInstance.get(url).then((res) => {
       this.setState({
         habits: [...res.data]
