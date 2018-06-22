@@ -26,7 +26,7 @@ def test_entry_created(app):
         assert entry
         assert entry.id == 1
         assert isinstance(entry.entry_day, datetime.date)
-        assert entry.status == 'empty'
+        assert entry.status == ' '
         assert entry.habit_id == 1
 
 

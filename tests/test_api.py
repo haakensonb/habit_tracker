@@ -56,7 +56,8 @@ def test_habits_api_post(client, app):
             'Authorization': 'Bearer {}'.format(access_token)
         }
         response = client.post('/api/habits/', headers=headers, json={
-            'name': 'new habit', 'description': 'this is a new habit'
+            'name': 'new habit', 'description': 'this is a new habit',
+            'start_date': '1/10/2018'
         })
         data = habit_schema.load(response.json).data
         assert data['name'] == 'new habit'
@@ -118,7 +119,7 @@ def test_create_entries_for_habit(client, app):
         entries = Entry.query.filter(Entry.habit_id == test_habit.id).all()
         assert len(entries) == 49
         for entry in entries:
-            assert entry.status == 'empty'
+            assert entry.status == ' '
             assert entry.habit_id == test_habit.id
 
 
@@ -131,7 +132,7 @@ def test_entry_api_get(client, app):
         response = client.get('/api/entry/1', headers=headers)
         data = entry_schema.load(response.json).data
         assert data
-        assert data['status'] == 'empty'
+        assert data['status'] == ' '
 
 
 def test_entry_api_put(client, app):

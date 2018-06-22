@@ -17,7 +17,7 @@ def test_user_registration_post(client, app):
         user = User.find_by_username('test_user')
         assert user
         assert user.username == 'test_user'
-        assert User.verify_hash('test_password', user.password)
+        assert User.verify_hash(user.password, 'test_password')
     
     assert data['message'] == 'user was created'
     assert data['access_token']
@@ -29,8 +29,7 @@ def test_user_registration_already_exists(client):
         'username': 'user_1',
         'password': 'test'
     })
-    data = response.get_json()
-    assert data['message'] == 'user user_1 already exists'
+    assert response.status_code == 422
 
 
 def test_login_user_doesnt_exist(client):
@@ -38,8 +37,7 @@ def test_login_user_doesnt_exist(client):
         'username': 'phil',
         'password': 'test'
     })
-    data = response.get_json()
-    assert data['message'] == 'User phil doesn\'t exist'
+    assert response.status_code == 401
 
 
 def test_login_password_incorrect(client):
@@ -47,8 +45,7 @@ def test_login_password_incorrect(client):
         'username': 'user_1',
         'password': 'wrong password'
     })
-    data = response.get_json()
-    assert data['message'] == 'Wrong credentials'
+    assert response.status_code == 401
 
 
 def test_login_post(client):
