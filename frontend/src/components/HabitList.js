@@ -3,7 +3,9 @@ import Habit from './Habit'
 import HabitForm from './HabitForm';
 import moment from 'moment';
 import axiosInstance from '../utils/axiosInstance';
-import { toast } from 'react-toastify';
+import connect from 'react-redux/lib/connect/connect';
+import { addMessage } from '../redux/actions';
+import { showMessage } from '../utils/showMessage';
 
 class HabitList extends Component {
   constructor(props) {
@@ -51,7 +53,8 @@ class HabitList extends Component {
       this.setState({
         habits: newData
       })
-      toast.success('Habit added')
+      this.props.addMessage('Habit added', 'success');
+      showMessage();
     })
 
   }
@@ -98,5 +101,10 @@ class HabitList extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addMessage: (message, messageType) => {dispatch(addMessage(message, messageType))}
+  }
+}
 
-export default HabitList;
+export default connect(null, mapDispatchToProps)(HabitList);

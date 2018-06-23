@@ -15,14 +15,15 @@ import LoginForm from './components/LoginForm';
 import RegistrationForm from './components/RegistrationForm';
 import HabitList from './components/HabitList';
 import HabitDetail from './components/HabitDetail';
+import NoMatch from './components/NoMatch';
 
 class App extends Component {
 
   render() {
     return (
       <Router>
-        <Switch>
-          <BaseLayout>
+        <BaseLayout>
+          <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/register" component={RegistrationForm}/>
             <Route exact path="/login" component={LoginForm}/>
@@ -30,8 +31,9 @@ class App extends Component {
             <Route exact path="/habit/:id" component={requireAuth(HabitDetail)} />
             <Route exact path="/habit/edit/:id" component={requireAuth(HabitEdit)} />
             <Route exact path="/logout" component={Logout}/>
-          </BaseLayout>
-        </Switch>
+            <Route component={NoMatch} />
+          </Switch>
+        </BaseLayout>
       </Router>
     );
   }

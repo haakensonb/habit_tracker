@@ -3,6 +3,9 @@ import { withRouter } from 'react-router-dom';
 import EntryBox from './EntryBox';
 import Link from 'react-router-dom/Link';
 import axiosInstance from '../utils/axiosInstance';
+import connect from 'react-redux/lib/connect/connect';
+import { addMessage } from '../redux/actions';
+import { showMessage } from '../utils/showMessage';
 
 class HabitDetail extends Component {
   constructor(props) {
@@ -12,7 +15,7 @@ class HabitDetail extends Component {
       name: '',
       description: '',
       entries: [],
-      message: ''
+      wrongId: false
     }
 
     this.id = this.props.match.params.id;
@@ -36,8 +39,10 @@ class HabitDetail extends Component {
         console.log(res.data)
       } else{
         this.setState({
-          message: res.data.message
-        })
+          wrongId: true
+        });
+        this.props.addMessage(res.data.message, 'error');
+        showMessage();
       }
       
     })
@@ -48,6 +53,8 @@ class HabitDetail extends Component {
     const confirmed = window.confirm("Are you sure you want to delete this habit?")
     if (confirmed){
       axiosInstance.delete(this.url).then(() => {
+        this.props.addMessage('Habit deleted', 'success');
+        showMessage();
         // redirect back to habits page
         this.props.history.push('/habits')
       })
@@ -98,15 +105,16 @@ class HabitDetail extends Component {
       );
     });
 
-
-    if (this.state.message) {
+    if (this.state.wrongId) {
       return (
         <div>
-          ERROR: {this.state.message}
+          <h3>
+            That habit doesn't seem to exist
+          </h3>
         </div>
       );
     }
-    
+
     return (
       <div>
         <p>Habit: {this.state.name}</p>
@@ -121,8 +129,13 @@ class HabitDetail extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addMessage: (message, messageType) => {dispatch(addMessage(message, messageType))}
+  }
+}
 
 // need to use withRouter so that we have access to url parameters in react router
 export default withRouter(
-  HabitDetail
+  connect(null, mapDispatchToProps)(HabitDetail)
 );

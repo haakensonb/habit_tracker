@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import axiosInstance from '../utils/axiosInstance';
+import { addMessage } from '../redux/actions';
+import connect from 'react-redux/lib/connect/connect';
+import { showMessage } from '../utils/showMessage';
 
 class HabitEdit extends Component {
   constructor(props) {
@@ -47,6 +50,8 @@ class HabitEdit extends Component {
       start_date: this.state.startDate
     }
     axiosInstance.put(this.url, data).then(() => {
+      this.props.addMessage('Habit edited', 'success');
+      showMessage();
       this.props.history.push(`/habit/${this.id}`)
     })
 
@@ -73,4 +78,10 @@ class HabitEdit extends Component {
   }
 }
 
-export default HabitEdit;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addMessage: (message, messageType) => {dispatch(addMessage(message, messageType))}
+  }
+}
+
+export default connect(null, mapDispatchToProps)(HabitEdit);
