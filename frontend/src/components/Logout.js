@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import { logoutUser, logoutUserFromApi } from '../redux/actions';
 import connect from 'react-redux/lib/connect/connect';
-import { ToastContainer} from 'react-toastify';
-import NavBar from '../components/NavBar';
 import Link from 'react-router-dom/Link';
 
-class LogoutPage extends Component {
+class Logout extends Component {
   componentWillMount(){
     const authToken = this.props.authToken;
     const refreshToken = this.props.refreshToken;
@@ -21,9 +19,6 @@ class LogoutPage extends Component {
   render() {
     return (
       <div>
-        <NavBar />
-        <ToastContainer />
-
         <h3>You are logged out</h3>
         <p><Link to='/'>Return to the homepage</Link></p>
       </div>
@@ -45,4 +40,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogoutPage)
+export default connect(mapStateToProps, mapDispatchToProps)(Logout)

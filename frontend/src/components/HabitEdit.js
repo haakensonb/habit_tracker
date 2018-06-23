@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import NavBar from '../components/NavBar';
 import axiosInstance from '../utils/axiosInstance';
 
-class HabitEditPage extends Component {
+class HabitEdit extends Component {
   constructor(props) {
     super(props);
 
@@ -56,7 +55,6 @@ class HabitEditPage extends Component {
   render() {
     return (
       <div>
-        <NavBar />
         <form onSubmit={this.handleSubmit}>
           <h3>Edit this habit</h3>
           <label>
@@ -75,4 +73,4 @@ class HabitEditPage extends Component {
   }
 }
 
-export default HabitEditPage;
+export default HabitEdit;

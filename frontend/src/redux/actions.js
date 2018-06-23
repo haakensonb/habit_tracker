@@ -1,11 +1,13 @@
-import { toast } from "react-toastify";
 import axiosInstance from '../utils/axiosInstance';
 import axios from 'axios';
+import { showMessage } from "../utils/showMessage";
 
 export const SEND_DATA = 'SEND_DATA';
 export const RECEIVE_DATA = 'RECEIVE_DATA';
 export const LOGOUT = 'LOGOUT';
 export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 
 
 export const sendData = () => {
@@ -57,10 +59,12 @@ export const logoutUserFromApi = (authToken, refreshToken) => {
 
     return Promise.all([authPromise, refreshPromise])
       .then(() => {
-        toast.success("Successfully logged out")
+        dispatch(addMessage('Successfully logged out', 'success'));
+        showMessage();
       })
       .catch(() => {
-        toast.error("Either you were already logged out or something went wrong")
+        dispatch(addMessage('Either you were already logged out or something went wrong', 'error'));
+        showMessage();
       })
 
   }
@@ -91,7 +95,23 @@ export const setAuthData = (url, username, password) => {
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('username', username);
-      toast.success(`Hi ${username}!`)
+      dispatch(addMessage(`Hi ${username}!`, 'success'))
+      showMessage();
     })
   }
 }
+
+export const addMessage = (message, messageType) => {
+  return {
+    type: ADD_MESSAGE,
+    message: message,
+    messageType: messageType
+  }
+}
+
+export const clearMessage = () => {
+  return {
+    type: CLEAR_MESSAGE
+  }
+}
+

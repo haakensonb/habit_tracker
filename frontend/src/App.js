@@ -5,16 +5,16 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import RegistrationPage from './pages/RegistrationPage';
-import LoginPage from './pages/LoginPage';
-import HabitsPage from './pages/HabitsPage';
-import LogoutPage from './pages/LogoutPage';
-import HabitDetailPage from './pages/HabitDetailPage';
-import HabitEditPage from './pages/HabitEditPage';
+import Logout from './components/Logout';
+import HabitEdit from './components/HabitEdit';
 import requireAuth from './utils/requireAuth';
-
 import 'react-toastify/dist/ReactToastify.min.css';
+import BaseLayout from './components/BaseLayout';
+import Home from './components/Home';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
+import HabitList from './components/HabitList';
+import HabitDetail from './components/HabitDetail';
 
 class App extends Component {
 
@@ -22,13 +22,15 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={HomePage}/>
-          <Route exact path="/register" component={RegistrationPage}/>
-          <Route exact path="/login" component={LoginPage}/>
-          <Route exact path="/habits" component={requireAuth(HabitsPage)}/>
-          <Route exact path="/habit/:id" component={requireAuth(HabitDetailPage)} />
-          <Route exact path="/habit/edit/:id" component={requireAuth(HabitEditPage)} />
-          <Route exact path="/logout" component={LogoutPage}/>
+          <BaseLayout>
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/register" component={RegistrationForm}/>
+            <Route exact path="/login" component={LoginForm}/>
+            <Route exact path="/habits" component={requireAuth(HabitList)}/>
+            <Route exact path="/habit/:id" component={requireAuth(HabitDetail)} />
+            <Route exact path="/habit/edit/:id" component={requireAuth(HabitEdit)} />
+            <Route exact path="/logout" component={Logout}/>
+          </BaseLayout>
         </Switch>
       </Router>
     );

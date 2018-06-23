@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SEND_DATA, RECEIVE_DATA, LOGOUT, UPDATE_AUTH_TOKEN } from "./actions";
+import { SEND_DATA, RECEIVE_DATA, LOGOUT, UPDATE_AUTH_TOKEN, ADD_MESSAGE, CLEAR_MESSAGE } from "./actions";
 
 const defaultState = {
   isFetching: false,
@@ -47,6 +47,29 @@ const authReducer = (state = defaultState, action) => {
   }
 }
 
+const defaultMessageState = {
+  message: '',
+  messageType: ''
+}
+
+const messageReducer = (state = defaultMessageState, action) => {
+  switch(action.type){
+    case ADD_MESSAGE:
+      return {
+        message: action.message,
+        messageType: action.messageType
+      }
+    case CLEAR_MESSAGE:
+      return {
+        message: '',
+        messageType: ''
+      }
+    default:
+      return state;
+  }
+}
+
 export const rootReducer = combineReducers({
-  authReducer
+  authReducer,
+  messageReducer
 })
