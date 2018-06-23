@@ -98,6 +98,12 @@ export const setAuthData = (url, username, password) => {
       dispatch(addMessage(`Hi ${username}!`, 'success'))
       showMessage();
     })
+    .catch((err) => {
+      // need to reset isFetching by logging out if something goes wrong
+      dispatch(logoutUser());
+      dispatch(addMessage('Make sure your credentials are correct. If you are attempting to register your username may already be taken', 'error'))
+      showMessage();
+    })
   }
 }
 
