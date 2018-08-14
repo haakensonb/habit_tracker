@@ -4,36 +4,45 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default function HabitForm(props) {
   return (
-    <div>
+    <section className='section'>
       <form onSubmit={props.handleSubmit}>
-        <h3>{props.title}</h3>
+        <h3 className='title'>{props.title}</h3>
 
-        <label>
-        Name:
-          <input type="text" name="name" value={props.name} onChange={props.handleChange}/>
-        </label>
+        <div className='field'>
+          <label className='label'>
+          Name:
+            <div className='control'>
+              <input className='input' type="text" name="name" value={props.name} onChange={props.handleChange}/>
+            </div>
+          </label>
+        </div>
 
-        <br />
+        <div className='field'>
+          <label className='label'>
+          Description:
+            <div className='control'>
+            <input className='input' type="text" name="description" value={props.description} onChange={props.handleChange}/>
+            </div>
+          </label>       
+        </div>
 
-        <label>
-        Description:
-          <input type="text" name="description" value={props.description} onChange={props.handleChange}/>
-        </label>
+        <div className='field'>
+          <label className='label'>
+            Start Date:
+            <div className='control'>
+            <DatePicker
+            className='input'
+            dateFormat="MM/DD/YYYY"
+            selected={props.startDate}
+            onChange={props.handleDateChange}/>
+            </div>
+          </label>
+        </div>
 
-        <br />
-
-        <label>
-          Start Date:
-          <DatePicker
-          dateFormat="MM/DD/YYYY"
-          selected={props.startDate}
-          onChange={props.handleDateChange}/>
-        </label>
-
-        <br />
-
-        <input type="submit" value="Submit"/>
+        <div className='control'>
+          <input className='button is-primary' type="submit" value="Submit"/>
+        </div>
       </form>
-    </div>
+    </section>
   );
 }

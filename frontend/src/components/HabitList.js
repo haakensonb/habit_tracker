@@ -95,6 +95,7 @@ class HabitList extends Component {
         handleDateChange={this.handleDateChange}
         />
 
+
         {habits}
       </div>
     );

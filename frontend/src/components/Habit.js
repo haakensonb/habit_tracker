@@ -13,7 +13,7 @@ export default function Habit(props) {
   const percentComplete = Math.round((daysComplete / 49) * 100);
 
   return (
-    <div>
+    <div className='box'>
       <p>Habit</p>
       <p>Name: {props.name}</p>
       <p>Days Complete: {daysComplete}</p>
@@ -21,7 +21,7 @@ export default function Habit(props) {
       <p>Started: {props.startDate}</p>
       {/* not sure that I actually want to show description here */}
       {/* <p>Description: {props.description}</p> */}
-      <Link to={`/habit/${props.id}`}>See details</Link>
+      <Link className='button is-info' to={`/habit/${props.id}`}>See details</Link>
     </div>
   );
 }
