@@ -124,7 +124,11 @@ class HabitDetail extends Component {
           <Link className='button is-info' to={`/habit/edit/${this.id}`}>Edit this habit</Link>
           <button className='button is-danger' onClick={this.deleteHabit}>Delete this habit</button>
         </div>
-        {entries}
+        <div className='container'>
+          <div className='wrapper'>
+            {entries}
+          </div>
+        </div>
       </section>
     );
   }

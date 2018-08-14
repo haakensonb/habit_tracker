@@ -47,13 +47,15 @@ class EntryBox extends Component {
   render() {
     const entryDay = moment(this.props.entryDay).format('L');
     return (
-      <div>
-        <p>Entry</p>
-        <p>Day: {entryDay}</p>
+      <div className='card item'>
+      <div className='card-content has-text-centered' onClick={this.toggleStatus}>
+          {this.state.status}
+      </div>
+      
 
-      <button onClick={this.toggleStatus}>
-        status: {this.state.status}
-      </button>
+      <footer className='card-footer'>
+        <time>{entryDay}</time>
+      </footer>
 
       </div>
     );
