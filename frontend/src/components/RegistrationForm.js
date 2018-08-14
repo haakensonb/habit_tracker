@@ -48,24 +48,40 @@ class RegistrationForm extends Component {
     }
 
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Username
-          <input type="text" name="username" values={this.state.username} onChange={this.handleChange}/>
-        </label>
-        <br />
-        <label>
-          Password
-          <input type="password" name="password" values={this.state.password} onChange={this.handleChange}/>
-        </label>
-        <br />
-        <label>
-          Confirm Password
-          <input type="password" name="passwordConfirm" values={this.state.passwordConfirm} onChange={this.handleChange}/>
-        </label>
-        <br />
-        <input type="submit" value="Submit"/>
-      </form>
+      <div>
+        <h1 className='title'>Register</h1>
+        <form onSubmit={this.handleSubmit}>
+          <div className='field'>
+          <label className='label'>
+            Username
+            <div className='control'>
+              <input className='input' type="text" name="username" values={this.state.username} onChange={this.handleChange}/>
+            </div>
+          </label>
+          </div>
+
+          <div className='field'>
+            <label className='label'>
+            Password
+              <div className='control'>
+                <input className='input' type="password" name="password" values={this.state.password} onChange={this.handleChange}/>
+              </div>
+            </label>
+          </div>
+          
+          <div className='field'>
+            <label className='label'>
+            Confirm Password
+              <div className='control'>
+                <input className='input' type="password" name="passwordConfirm" values={this.state.passwordConfirm} onChange={this.handleChange}/>
+              </div>
+            </label>
+          </div>
+          <div className='control'>
+            <input className='button is-primary' type="submit" value="Submit"/>
+          </div>
+        </form>
+      </div>
     )
   }
 }

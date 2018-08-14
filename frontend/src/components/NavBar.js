@@ -70,7 +70,7 @@ const LoggedInLinks = (props) => {
       </div>
       <div className={`navbar-menu ${props.activeClass}`}>
         <div className='navbar-end'>
-          <p>You are logged in as {props.username}</p>
+          <p className='navbar-item'>You are logged in as {props.username}</p>
           <Link onClick={props.toggleClass} className='navbar-item' to="/">Home</Link>
           <Link onClick={props.toggleClass} className='navbar-item' to="/habits">Habits</Link>
           <Link onClick={props.toggleClass} className='navbar-item' to="/logout">Logout</Link>
