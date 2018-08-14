@@ -59,21 +59,31 @@ class HabitEdit extends Component {
 
   render() {
     return (
-      <div>
+      <section className='section'>
         <form onSubmit={this.handleSubmit}>
-          <h3>Edit this habit</h3>
-          <label>
-            <input type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
-          </label>
-          <br />
-          <label>
-            <input type="text" name="description" value={this.state.description} onChange={this.handleChange}/>
-          </label>
-          <br />
-          <input type="submit" value="Submit"/>
+          <h3 className='title'>Edit this habit</h3>
+          <div className='field'>
+            <label className='label'>
+              <div className='control'>
+              <input className='input' type="text" name="name" value={this.state.name} onChange={this.handleChange}/>
+              </div>
+            </label>
+          </div>
+
+          <div className='field'>
+            <label className='label'>
+              <div className='control'>
+                <input className='input' type="text" name="description" value={this.state.description} onChange={this.handleChange}/>
+              </div>
+            </label>
+          </div>
+
+          <div className='control'>
+            <input className='button is-primary' type="submit" value="Submit"/>
+          </div>
 
         </form>
-      </div>
+      </section>
     );
   }
 }

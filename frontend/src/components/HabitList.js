@@ -96,7 +96,10 @@ class HabitList extends Component {
         />
 
 
-        {habits}
+        <section className='section'>
+          {habits}
+        </section>
+        
       </div>
     );
   }
