@@ -2,8 +2,22 @@ import React from 'react';
 
 export default function Home(props){
   return (
-    <h1>
-      This is now the home page
-    </h1>
+  <div>
+    <section class="hero">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title">
+          Habit Tracker
+        </h1>
+        <h2 class="subtitle">
+          Form new habits!
+        </h2>
+      </div>
+    </div>
+  </section>
+  <section>
+    <p className=''>Use <a className='is-link' href='https://www.reddit.com/r/theXeffect/'>the Xeffect</a> to form new habits. Pick a new habit and try to do it every day for 49 days. Each day that is completed will be marked with an X. Try not to break your streak of X's. At the end of the 49 days you should have solidified a new habit!</p>
+  </section>
+  </div>
   )
 }
