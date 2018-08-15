@@ -7,7 +7,11 @@ export default function Home(props){
     <div className="hero-body">
       <div className="container has-text-centered">
         <h1 className="title">
+          <span className='icon'><i className='fas fa-times has-text-success'></i></span>
+          &nbsp;
           Habit Tracker
+          &nbsp;
+          <span className='icon'><i className='far fa-circle has-text-danger'></i></span>
         </h1>
         <h2 className="subtitle">
           Form new habits!

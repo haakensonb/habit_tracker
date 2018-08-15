@@ -123,8 +123,21 @@ class HabitDetail extends Component {
             <p className='subtitle'>{this.state.description}</p>
             <p>Highest Streak: {this.getHighestStreak(this.state.entries)}</p>
             <div className='buttons is-centered'>
-              <Link className='button is-info' to={`/habit/edit/${this.id}`}>Edit this habit</Link>
-              <button className='button is-danger' onClick={this.deleteHabit}>Delete this habit</button>
+              <Link className='button is-info' to={`/habit/edit/${this.id}`}>
+                <span className='icon'>
+                    <i className='fas fa-edit'></i>
+                </span>
+                &nbsp;
+                Edit this habit
+              </Link>
+
+              <button className='button is-danger' onClick={this.deleteHabit}>
+                <span className='icon'>
+                  <i className='fas fa-trash'></i>
+                </span>
+                &nbsp;
+                Delete this habit
+              </button>
             </div>
           </div>
         

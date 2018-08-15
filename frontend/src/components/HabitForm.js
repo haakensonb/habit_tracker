@@ -6,7 +6,11 @@ export default function HabitForm(props) {
   return (
     <section className='section'>
       <form onSubmit={props.handleSubmit}>
-        <h3 className='title'>{props.title}</h3>
+        <h3 className='title'>
+        {props.title}
+        &nbsp;
+        <span className='icon'><i className='fas fa-pen has-text-primary'></i></span>
+        </h3>
 
         <div className='field'>
           <label className='label'>

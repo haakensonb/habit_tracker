@@ -9,7 +9,6 @@ import { receiveData } from './redux/actions';
 import { store } from './redux/store';
 
 
-
 // check to see if tokens are already in the localStorage
 const authToken = localStorage.getItem('authToken');
 const refreshToken = localStorage.getItem('refreshToken');
