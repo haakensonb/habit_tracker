@@ -39,7 +39,13 @@ class LoginForm extends Component {
       }
 
       if (this.props.isFetching) {
-        return <div>LOADING...</div>
+        return (<section className='section hero is-medium'>
+          <div className='hero-body'>
+            <h1 className='title'>
+              LOADING... <a className='button is-info is-loading' href='#'>I am still loading</a>
+            </h1>
+          </div>
+        </section>)
       }
 
       return (
