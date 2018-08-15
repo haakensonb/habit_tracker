@@ -43,6 +43,8 @@ class LoginForm extends Component {
       }
 
       return (
+        <section className='section'>
+        <h3 className='title'>Login</h3>
         <form onSubmit={this.handleSubmit}>
           <div className='field'>
             <label className='label'>
@@ -65,6 +67,7 @@ class LoginForm extends Component {
             <input className='button is-primary' type="submit" value="Submit"/>
           </div>
         </form>
+        </section>
         )
     }
   }

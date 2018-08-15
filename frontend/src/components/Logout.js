@@ -18,10 +18,10 @@ class Logout extends Component {
 
   render() {
     return (
-      <div>
-        <h3>You are logged out</h3>
+      <section className='section'>
+        <h3 className='title'>You are logged out</h3>
         <p><Link to='/'>Return to the homepage</Link></p>
-      </div>
+      </section>
     )
   }
 }

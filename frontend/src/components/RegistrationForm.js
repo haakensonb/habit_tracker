@@ -48,7 +48,7 @@ class RegistrationForm extends Component {
     }
 
     return (
-      <div>
+      <section className='section'>
         <h1 className='title'>Register</h1>
         <form onSubmit={this.handleSubmit}>
           <div className='field'>
@@ -81,7 +81,7 @@ class RegistrationForm extends Component {
             <input className='button is-primary' type="submit" value="Submit"/>
           </div>
         </form>
-      </div>
+      </section>
     )
   }
 }
