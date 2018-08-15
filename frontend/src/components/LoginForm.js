@@ -42,7 +42,7 @@ class LoginForm extends Component {
         return (<section className='section hero is-medium'>
           <div className='hero-body'>
             <h1 className='title'>
-              LOADING... <a className='button is-info is-loading' href='#'>I am still loading</a>
+              LOADING... <button className='button is-info is-loading'>I am still loading</button>
             </h1>
           </div>
         </section>)
