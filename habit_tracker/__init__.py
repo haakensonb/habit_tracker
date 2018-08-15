@@ -5,6 +5,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import jwt_required, JWTManager
 from habit_tracker.models import RevokedToken
+from flask_migrate import Migrate
 
 def create_app(test_config=None):
     # create and configure the app
@@ -25,6 +26,8 @@ def create_app(test_config=None):
     ma.init_app(app)
     # setup hashing
     bcrypt.init_app(app)
+    # setup flask-migrate
+    migrate = Migrate(app, db)
 
     app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
     app.config['JWT_BLACKLIST_ENABLED'] = True
