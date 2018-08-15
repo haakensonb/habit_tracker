@@ -36,7 +36,7 @@ class NavBar extends Component {
 
 const NotLoggedInLinks = (props) => {
   return (
-    <nav className='navbar' aria-label='main navigation'>
+    <nav className='navbar is-fixed-top' aria-label='main navigation'>
       <div className='navbar-brand'>
         <Link className="navbar-item" to="/">Habit Tracker</Link>
         <a onClick={props.toggleClass} role="button" className={`navbar-burger ${props.activeClass}`} aria-label="menu" aria-expanded="false">
