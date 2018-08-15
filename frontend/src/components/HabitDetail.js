@@ -117,12 +117,17 @@ class HabitDetail extends Component {
 
     return (
       <section className='section'>
-        <p>Habit: {this.state.name}</p>
-        <p>description: {this.state.description}</p>
-        <p>Highest Streak: {this.getHighestStreak(this.state.entries)}</p>
-        <div className='buttons'>
-          <Link className='button is-info' to={`/habit/edit/${this.id}`}>Edit this habit</Link>
-          <button className='button is-danger' onClick={this.deleteHabit}>Delete this habit</button>
+        <div className='columns is-mobile is-centered'>
+          <div className='column is-two-thirds has-text-centered'>
+            <p className='title'>{this.state.name}</p>
+            <p className='subtitle'>{this.state.description}</p>
+            <p>Highest Streak: {this.getHighestStreak(this.state.entries)}</p>
+            <div className='buttons is-centered'>
+              <Link className='button is-info' to={`/habit/edit/${this.id}`}>Edit this habit</Link>
+              <button className='button is-danger' onClick={this.deleteHabit}>Delete this habit</button>
+            </div>
+          </div>
+        
         </div>
         <div className='container'>
           <div className='wrapper'>

@@ -97,7 +97,9 @@ class HabitList extends Component {
 
 
         <section className='section'>
-          {habits}
+          <div className='columns is-multiline is-mobile is-centered'>
+            {habits}
+          </div>
         </section>
         
       </div>
