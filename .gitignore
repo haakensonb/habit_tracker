@@ -10,7 +10,6 @@ __pycache__/
 .pytest_cache/
 habit_tracker/.pytest_cache/
 secret.py
-frontend/src/styles.css
 
 # dependencies
 node_modules
