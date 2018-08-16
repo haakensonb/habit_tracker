@@ -45,7 +45,15 @@ class RegistrationForm extends Component {
     }
 
     if (this.props.isFetching) {
-      return <div>LOADING...</div>
+    return (
+      <section className='section hero is-medium'>
+        <div className='hero-body'>
+          <h1 className='title'>
+            LOADING... <button className='button is-info is-loading'>I am still loading</button>
+          </h1>
+        </div>
+      </section>
+      )
     }
 
     return (

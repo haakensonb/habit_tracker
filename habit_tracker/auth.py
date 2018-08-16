@@ -1,23 +1,41 @@
 from flask import (
-    Blueprint, request, jsonify, abort, current_app, url_for
+    Blueprint, request, jsonify, abort
 )
 from flask.views import MethodView
-from habit_tracker.models import user_schema, User, RevokedToken
+from habit_tracker.models import user_schema, User, RevokedToken, db
 from flask_jwt_extended import (
     create_access_token, create_refresh_token, jwt_required,
     jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
 )
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail, Message
+from config import SECRET_KEY, FRONTEND_URL_BASE
 
 mail = Mail()
 
+email_token_serializer = URLSafeTimedSerializer(SECRET_KEY)
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-@bp.route('/confirm_email')
-def confirm_email():
-    return 'cool'
+
+class ConfirmEmail(MethodView):
+    def post(self):
+        email_token = request.get_json()['email_token']
+        try:
+            email = email_token_serializer.loads(email_token, salt='email-confirm-key', max_age=86400)
+        except:
+            abort(404)
+        
+        user = User.query.filter_by(email=email).first_or_404()
+
+        user.email_confirmed = 1
+
+        db.session.add(user)
+        db.session.commit()
+
+        return jsonify({
+            'message': 'Email successfully verified'
+        })
 
 class UserRegistration(MethodView):
     def post(self):
@@ -41,9 +59,8 @@ class UserRegistration(MethodView):
         #     'username': new_user.username
         #     })
 
-        email_token_serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
         email_token = email_token_serializer.dumps(new_user.email, salt='email-confirm-key')
-        confirm_url = url_for('auth.confirm_email', email_token=email_token, _external=True)
+        confirm_url = '{}confirm_email/{}'.format(FRONTEND_URL_BASE, email_token)
 
         msg = Message(
             'Please verify email for Habit Tracker',
@@ -76,7 +93,6 @@ class UserLogin(MethodView):
             refresh_token = create_refresh_token(identity=user_data['username'])
 
             return jsonify({
-                'message': 'Logged in as {}'.format(current_user.username),
                 'access_token': access_token,
                 'refresh_token': refresh_token,
                 'username': current_user.username
@@ -129,3 +145,4 @@ bp.add_url_rule('/login', view_func=UserLogin.as_view('login'))
 bp.add_url_rule('/logout/access', view_func=UserLogoutAccess.as_view('logout_access'))
 bp.add_url_rule('/logout/refresh', view_func=UserLogoutRefresh.as_view('logout_refresh'))
 bp.add_url_rule('/token/refresh', view_func=TokenRefresh.as_view('token_refresh'))
+bp.add_url_rule('/confirm_email', view_func=ConfirmEmail.as_view('confirm_email'))

@@ -16,6 +16,7 @@ import RegistrationForm from './components/RegistrationForm';
 import HabitList from './components/HabitList';
 import HabitDetail from './components/HabitDetail';
 import NoMatch from './components/NoMatch';
+import ConfirmEmail from './components/ConfirmEmail';
 
 
 
@@ -28,6 +29,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route exact path="/register" component={RegistrationForm}/>
+            <Route exact path="/confirm_email/:token" component={ConfirmEmail}/>
             <Route exact path="/login" component={LoginForm}/>
             <Route exact path="/habits" component={requireAuth(HabitList)}/>
             <Route exact path="/habit/:id" component={requireAuth(HabitDetail)} />
