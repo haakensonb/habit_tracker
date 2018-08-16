@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { setAuthData } from '../redux/actions';
+import { setAuthDataRegistration } from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -95,7 +95,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: (url, username, password) => dispatch(setAuthData(url, username, password))
+    register: (url, username, password) => dispatch(setAuthDataRegistration(url, username, password))
   }
 }
 

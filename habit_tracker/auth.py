@@ -23,14 +23,17 @@ class UserRegistration(MethodView):
             return abort(422)
 
         new_user.save()
-        access_token = create_access_token(identity=user_data['username'])
-        refresh_token = create_refresh_token(identity=user_data['username'])
+        # access_token = create_access_token(identity=user_data['username'])
+        # refresh_token = create_refresh_token(identity=user_data['username'])
+        # return jsonify({
+        #     'message': 'user was created',
+        #     'access_token': access_token,
+        #     'refresh_token': refresh_token,
+        #     'username': new_user.username
+        #     })
         return jsonify({
-            'message': 'user was created',
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-            'username': new_user.username
-            })
+            'message': 'User was created. Please verify email before logging in'
+        })
 
 
 class UserLogin(MethodView):
@@ -40,6 +43,11 @@ class UserLogin(MethodView):
         # if we can't find that user return error
         if not current_user:
             return abort(401)
+
+        if current_user.email_confirmed != 1:
+            return jsonify({
+                'message': 'You must verify your email address before you can login'
+            })
 
         if User.verify_hash(current_user.password, user_data['password']):
             access_token = create_access_token(identity=user_data['username'])

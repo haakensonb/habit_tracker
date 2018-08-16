@@ -88,14 +88,47 @@ export const setAuthData = (url, username, password) => {
   return (dispatch) => {
     dispatch(sendData());
     axiosInstance.post(url, data).then(res => {
-      const authToken = res.data.access_token;
-      const refreshToken = res.data.refresh_token;
-      const username = res.data.username;
-      dispatch(receiveData(authToken, refreshToken, username));
-      localStorage.setItem('authToken', authToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('username', username);
-      dispatch(addMessage(`Hi ${username}!`, 'success'))
+      const message = res.data.message;
+      if (message) {
+        dispatch(logoutUser());
+        dispatch(addMessage(message, 'error'));
+        showMessage();
+      } else {
+        const authToken = res.data.access_token;
+        const refreshToken = res.data.refresh_token;
+        const username = res.data.username;
+        dispatch(receiveData(authToken, refreshToken, username));
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('username', username);
+        dispatch(addMessage(`Hi ${username}!`, 'success'))
+        showMessage();
+      }
+      
+    })
+    .catch((err) => {
+      // need to reset isFetching by logging out if something goes wrong
+      dispatch(logoutUser());
+      dispatch(addMessage('Make sure your credentials are correct. If you are attempting to register your username may already be taken', 'error'))
+      showMessage();
+    })
+  }
+}
+
+// this is like setAuthData but should only be used for registering
+// the distinctions between the are not really clear and should be refactored/renamed in the future
+export const setAuthDataRegistration = (url, username, password) => {
+  const data = {
+    username: username,
+    password: password
+  };
+
+  return (dispatch) => {
+    dispatch(sendData());
+    axiosInstance.post(url, data).then(res => {
+      const message = res.data.message;
+      dispatch(logoutUser());
+      dispatch(addMessage(message, 'success'))
       showMessage();
     })
     .catch((err) => {
@@ -106,6 +139,7 @@ export const setAuthData = (url, username, password) => {
     })
   }
 }
+
 
 export const addMessage = (message, messageType) => {
   return {
