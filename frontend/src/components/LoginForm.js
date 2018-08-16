@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { setAuthData} from '../redux/actions';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -73,6 +73,9 @@ class LoginForm extends Component {
             <input className='button is-primary' type="submit" value="Submit"/>
           </div>
         </form>
+        <br/>
+        <br/>
+        <Link className='button' to='/account_reset'>Forgot password</Link>
         </section>
         )
     }

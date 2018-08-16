@@ -17,7 +17,8 @@ import HabitList from './components/HabitList';
 import HabitDetail from './components/HabitDetail';
 import NoMatch from './components/NoMatch';
 import ConfirmEmail from './components/ConfirmEmail';
-
+import AccountReset from './components/AccountReset';
+import ResetPassword from './components/ResetPassword';
 
 
 class App extends Component {
@@ -30,6 +31,8 @@ class App extends Component {
             <Route exact path="/" component={Home}/>
             <Route exact path="/register" component={RegistrationForm}/>
             <Route exact path="/confirm_email/:token" component={ConfirmEmail}/>
+            <Route exact path="/account_reset" component={AccountReset}/>
+            <Route exact path="/reset_password/:token" component={ResetPassword}/>
             <Route exact path="/login" component={LoginForm}/>
             <Route exact path="/habits" component={requireAuth(HabitList)}/>
             <Route exact path="/habit/:id" component={requireAuth(HabitDetail)} />

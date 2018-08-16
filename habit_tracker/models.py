@@ -58,6 +58,23 @@ class RevokedToken(db.Model):
         return bool(query)
 
 
+# kind of repetitive but should work for now
+class RevokedResetToken(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    reset_token = db.Column(db.String(200))
+
+
+    def add(self):
+        db.session.add(self)
+        db.session.commit()
+    
+
+    @classmethod
+    def is_reset_token_blacklisted(cls, reset_token):
+        query = cls.query.filter_by(reset_token=reset_token).first()
+        return bool(query)
+
+
 class Habit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
