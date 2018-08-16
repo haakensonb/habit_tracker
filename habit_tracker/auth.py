@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, request, jsonify, abort
+    Blueprint, request, jsonify, abort, current_app, url_for
 )
 from flask.views import MethodView
 from habit_tracker.models import user_schema, User, RevokedToken
@@ -7,14 +7,23 @@ from flask_jwt_extended import (
     create_access_token, create_refresh_token, jwt_required,
     jwt_refresh_token_required, get_jwt_identity, get_raw_jwt
 )
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail, Message
+
+mail = Mail()
 
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+@bp.route('/confirm_email')
+def confirm_email():
+    return 'cool'
 
 class UserRegistration(MethodView):
     def post(self):
         user_data = user_schema.load(request.json).data
         new_user = User(
+            email=user_data['email'],
             username=user_data['username'],
             password=User.generate_hash(user_data['password'])
         )
@@ -31,6 +40,19 @@ class UserRegistration(MethodView):
         #     'refresh_token': refresh_token,
         #     'username': new_user.username
         #     })
+
+        email_token_serializer = URLSafeTimedSerializer(current_app.config["SECRET_KEY"])
+        email_token = email_token_serializer.dumps(new_user.email, salt='email-confirm-key')
+        confirm_url = url_for('auth.confirm_email', email_token=email_token, _external=True)
+
+        msg = Message(
+            'Please verify email for Habit Tracker',
+            sender='no-reply@example.com',
+        )
+        msg.add_recipient(new_user.email)
+        msg.html = 'Hi {}! <br/> Please go to this link to confirm your email <a href="{}">{}<a/>'.format(new_user.username ,confirm_url, confirm_url)
+        mail.send(msg)
+
         return jsonify({
             'message': 'User was created. Please verify email before logging in'
         })

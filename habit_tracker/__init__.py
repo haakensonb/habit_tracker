@@ -6,6 +6,8 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, JWTManager
 from habit_tracker.models import RevokedToken
 
+from config import MT_USERNAME, MT_PASSWORD
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -25,6 +27,16 @@ def create_app(test_config=None):
     ma.init_app(app)
     # setup hashing
     bcrypt.init_app(app)
+    # setup flask mail
+    app.config['MAIL_SERVER'] = 'smtp.mailtrap.io'
+    app.config['MAIL_DEBUG'] = True
+    app.config['MAIL_SUPPRESS_SEND'] = False
+    app.config['MAIL_PORT'] = 2525
+    app.config['MAIL_USERNAME'] = MT_USERNAME
+    app.config['MAIL_PASSWORD'] = MT_PASSWORD
+
+    from habit_tracker.auth import mail
+    mail.init_app(app)
 
     app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
     app.config['JWT_BLACKLIST_ENABLED'] = True

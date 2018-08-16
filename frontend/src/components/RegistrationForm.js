@@ -7,6 +7,7 @@ class RegistrationForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: '',
       username: '',
       password: '',
       passwordConfirm: ''
@@ -29,7 +30,7 @@ class RegistrationForm extends Component {
   handleSubmit(event) {
     const url = 'http://127.0.0.1:5000/auth/registration';
     if (this.state.password === this.state.passwordConfirm) {
-      this.props.register(url, this.state.username, this.state.password);
+      this.props.register(url, this.state.email, this.state.username, this.state.password);
     } else {
       window.alert("Passwords don't match");
     }
@@ -51,6 +52,16 @@ class RegistrationForm extends Component {
       <section className='section'>
         <h1 className='title'>Register</h1>
         <form onSubmit={this.handleSubmit}>
+
+          <div className='field'>
+          <label className='label'>
+            Email
+            <div className='control'>
+              <input className='input' type="email" name="email" values={this.state.email} onChange={this.handleChange}/>
+            </div>
+          </label>
+          </div>
+
           <div className='field'>
           <label className='label'>
             Username
@@ -95,7 +106,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    register: (url, username, password) => dispatch(setAuthDataRegistration(url, username, password))
+    register: (url, email, username, password) => dispatch(setAuthDataRegistration(url, email, username, password))
   }
 }
 

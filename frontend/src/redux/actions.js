@@ -117,8 +117,9 @@ export const setAuthData = (url, username, password) => {
 
 // this is like setAuthData but should only be used for registering
 // the distinctions between the are not really clear and should be refactored/renamed in the future
-export const setAuthDataRegistration = (url, username, password) => {
+export const setAuthDataRegistration = (url, email, username, password) => {
   const data = {
+    email: email,
     username: username,
     password: password
   };
