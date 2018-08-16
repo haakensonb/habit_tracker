@@ -28,6 +28,7 @@ class ConfirmEmail(MethodView):
         
         user = User.query.filter_by(email=email).first_or_404()
 
+        # email token has been verified and user has been found in the database so confirm email by changing to True(1)
         user.email_confirmed = 1
 
         db.session.add(user)
@@ -50,16 +51,10 @@ class UserRegistration(MethodView):
             return abort(422)
 
         new_user.save()
-        # access_token = create_access_token(identity=user_data['username'])
-        # refresh_token = create_refresh_token(identity=user_data['username'])
-        # return jsonify({
-        #     'message': 'user was created',
-        #     'access_token': access_token,
-        #     'refresh_token': refresh_token,
-        #     'username': new_user.username
-        #     })
 
+        # use itsdangerous to create a token for confirming email
         email_token = email_token_serializer.dumps(new_user.email, salt='email-confirm-key')
+        # User will go to a frontend url and then frontend will use axios to send token to correct endpoint
         confirm_url = '{}confirm_email/{}'.format(FRONTEND_URL_BASE, email_token)
 
         msg = Message(
