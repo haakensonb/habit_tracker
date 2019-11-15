@@ -33,7 +33,7 @@ class HabitList extends Component {
 
   handleDateChange(date) {
     this.setState({
-      startDate: date
+      startDate: date.utc()
     })
   }
 
