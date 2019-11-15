@@ -122,7 +122,7 @@ class Entry(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
     def __repr__(self):
-        return '<Entry {}'.format(self.status)
+        return '<Entry {}>'.format(self.status)
 
 
 class EntrySchema(ma.Schema):

@@ -44,7 +44,7 @@ class HabitList extends Component {
     const data = {
       name: this.state.name,
       description: this.state.description,
-      start_date: this.state.startDate.format('L')
+      start_date: this.state.startDate.utc().format('L')
     }
     axiosInstance.post(url, data).then(res => {
       // have to use concat to add data to habits
@@ -78,7 +78,7 @@ class HabitList extends Component {
         name={habit.name}
         description={habit.description}
         entries={habit.entries}
-        startDate={moment(habit.start_date).format('L')}
+        startDate={moment(habit.start_date).utc().format('L')}
         />
     )});
 

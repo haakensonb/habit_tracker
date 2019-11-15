@@ -65,7 +65,7 @@ class EntryBox extends Component {
   }
   
   render() {
-    const entryDay = moment(this.props.entryDay).format('L');
+    const entryDay = moment(this.props.entryDay).utc().format('L');
     return (
       <div className='card item'>
       <div className={`card-content is-size-4 has-text-white has-text-centered ${this.state.colorClass}`} onClick={this.toggleStatus}>
