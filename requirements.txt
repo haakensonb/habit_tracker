@@ -19,7 +19,6 @@ Flask-Mail==0.9.1
 flask-marshmallow==0.9.0
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
--e git+https://gitlab.com/haakensonb/habit_tracker.git@63176df68ca99c945f04fe68e77e9a823c4241bf#egg=habit_tracker
 idna==2.6
 isort==4.3.4
 itsdangerous==0.24
