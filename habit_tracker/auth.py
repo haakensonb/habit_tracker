@@ -111,7 +111,7 @@ class UserRegistration(MethodView):
         # use itsdangerous to create a token for confirming email
         email_token = email_token_serializer.dumps(new_user.email, salt='email-confirm-key')
         # User will go to a frontend url and then frontend will use axios to send token to correct endpoint
-        confirm_url = '{}confirm_email/{}'.format(FRONTEND_URL_BASE, email_token)
+        confirm_url = '{}/confirm_email/{}'.format(FRONTEND_URL_BASE, email_token)
 
         msg = Message(
             'Please verify email for Habit Tracker',
