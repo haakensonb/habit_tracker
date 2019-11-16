@@ -52,6 +52,12 @@ class LoginForm extends Component {
       return (
         <section className='section'>
         <h3 className='title'>Login</h3>
+        <div className="content">
+          <p>Habit Tracker can be tried out using the demo account. <br></br>
+          Username: DemoAccount <br></br>
+          Password: habitTester123</p>
+          <p className="has-text-weight-bold">Demo account data is cleared daily. If you want your data to persist you must register your own account.</p>
+        </div>
         <form onSubmit={this.handleSubmit}>
           <div className='field'>
             <label className='label'>
