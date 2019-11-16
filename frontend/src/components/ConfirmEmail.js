@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { withRouter } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
+import baseURL from '../utils/baseURL';
 
 class ConfirmEmail extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class ConfirmEmail extends Component {
       message: ''
     }
     this.token = this.props.match.params.token;
-    this.url = 'http://127.0.0.1:5000/auth/confirm_email';
+    this.url = `${baseURL}/auth/confirm_email`;
   }
 
   componentDidMount() {

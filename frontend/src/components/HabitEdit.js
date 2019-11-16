@@ -3,6 +3,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { addMessage } from '../redux/actions';
 import connect from 'react-redux/lib/connect/connect';
 import { showMessage } from '../utils/showMessage';
+import baseURL from '../utils/baseURL';
 
 class HabitEdit extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class HabitEdit extends Component {
     }
 
     this.id = this.props.match.params.id;
-    this.url = `http://127.0.0.1:5000/api/habits/${this.id}`;
+    this.url = `${baseURL}/api/habits/${this.id}`;
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

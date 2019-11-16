@@ -4,6 +4,7 @@ import issueToken from './issueToken';
 import { updateAuthToken } from '../redux/actions';
 import { store } from '../redux/store';
 import { toast } from 'react-toastify';
+import baseURL from './baseURL';
 
 // create an instance of axios so that global settings can be changed
 // and persist across multiple pages
@@ -12,7 +13,7 @@ var axiosInstance = axios.create();
 // axios will run this before every request to make sure that the authToken is not expired
 axiosInstance.interceptors.request.use((config) => {
   let originalRequest = config;
-  const loginUrl = 'http://127.0.0.1:5000/auth/login';
+  const loginUrl = `${baseURL}/auth/login`;
   const refreshToken = store.getState().authReducer.refreshToken;
   const authToken = store.getState().authReducer.authToken;
 

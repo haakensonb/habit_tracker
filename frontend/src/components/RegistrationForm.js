@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { setAuthDataRegistration } from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import baseURL from '../utils/baseURL';
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class RegistrationForm extends Component {
   }
 
   handleSubmit(event) {
-    const url = 'http://127.0.0.1:5000/auth/registration';
+    const url = `${baseURL}/auth/registration`;
     if (this.state.password === this.state.passwordConfirm) {
       this.props.register(url, this.state.email, this.state.username, this.state.password);
     } else {
