@@ -199,3 +199,4 @@ bp.add_url_rule('/token/refresh', view_func=TokenRefresh.as_view('token_refresh'
 bp.add_url_rule('/confirm_email', view_func=ConfirmEmail.as_view('confirm_email'))
 bp.add_url_rule('/account_reset', view_func=SendPasswordReset.as_view('account_reset'))
 bp.add_url_rule('/password_reset', view_func=PasswordReset.as_view('password_reset'))
+

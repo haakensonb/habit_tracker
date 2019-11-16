@@ -1,2 +1,2 @@
-const baseURL = 'http://localhost:3000';
+const baseURL = 'https://projects.brandonhaakenson.com:8080';
 export default baseURL;

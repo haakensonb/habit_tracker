@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, JWTManager
 from habit_tracker.models import RevokedToken
 
-from config import MAIL_SERVER, MAIL_PORT, MAIL_DEBUG, MAIL_USERNAME, MAIL_PASSWORD, SECRET_KEY, JWT_SECRET_KEY, FRONTEND_URL_BASE
+from config import MAIL_SERVER, MAIL_PORT, MAIL_DEBUG, MAIL_USERNAME, MAIL_PASSWORD, SECRET_KEY, JWT_SECRET_KEY, FRONTEND_URL_BASE, MAIL_USE_SSL
 
 def create_app(test_config=None):
     # create and configure the app
@@ -30,6 +30,7 @@ def create_app(test_config=None):
     app.config['MAIL_DEBUG'] = MAIL_DEBUG
     app.config['MAIL_SUPPRESS_SEND'] = False
     app.config['MAIL_PORT'] = MAIL_PORT
+    app.config['MAIL_USE_SSL'] = MAIL_USE_SSL
     app.config['MAIL_USERNAME'] = MAIL_USERNAME
     app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
