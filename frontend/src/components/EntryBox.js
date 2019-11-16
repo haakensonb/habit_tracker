@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import axiosInstance from '../utils/axiosInstance';
+import baseURL from '../utils/baseURL';
 
 class EntryBox extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class EntryBox extends Component {
 
   changeEntry(newStatus, colorClass) {
     const id = this.props.id;
-    const url = `http://127.0.0.1:5000/api/entry/${id}`;
+    const url = `${baseURL}/api/entry/${id}`;
 
     const data = {
       status: newStatus,

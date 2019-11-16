@@ -4,6 +4,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { showMessage } from '../utils/showMessage';
 import { addMessage } from '../redux/actions';
 import { connect } from 'react-redux';
+import baseURL from '../utils/baseURL';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class ResetPassword extends Component {
       new_password: ''
     }
     this.token = this.props.match.params.token;
-    this.url = 'http://127.0.0.1:5000/auth/password_reset';
+    this.url = `${baseURL}/auth/password_reset`;
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
