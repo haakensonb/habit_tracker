@@ -16,7 +16,7 @@ The basic idea of the X effect for habit building is that a person should mark a
 
  ### Demo
 
-Try out the habit tracker at
+Try out the habit tracker [here](https://www.projects.brandonhaakenson.com/)
 
 Username: DemoAccount
 
