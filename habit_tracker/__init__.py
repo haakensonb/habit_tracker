@@ -65,10 +65,10 @@ def create_app(test_config=None):
         pass
     
     # a simple test page that says hello
-    # @app.route('/hello')
+    @app.route('/hello')
     # @jwt_required
-    # def hello():
-        # return 'Hello World!'
+    def hello():
+        return 'Hello World!'
 
 
     # register the api blueprint with the app
