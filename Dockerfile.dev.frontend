@@ -1,0 +1,11 @@
+# Dev version of the container to be used with hot-reloading
+# Prod version of container uses multi-stage build
+FROM node:14
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY ./src ./src
+COPY ./public ./public
+COPY ./package.json ./package-lock.json ./
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "start"]

@@ -8,7 +8,7 @@ from config import MAIL_SERVER, MAIL_PORT, MAIL_DEBUG, MAIL_USERNAME, MAIL_PASSW
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, static_url_path='', static_folder='../build', instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY=SECRET_KEY,
         DATABASE=os.path.join(app.instance_path, 'habit_tracker.sqlite')
@@ -21,6 +21,8 @@ def create_app(test_config=None):
     from habit_tracker.models import db, ma, bcrypt
     # setup sqlalchemy
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
     # setup marshmallow
     ma.init_app(app)
     # setup hashing
@@ -48,7 +50,9 @@ def create_app(test_config=None):
 
 
     # setup CORS for react
-    cors = CORS(app, origins=[FRONTEND_URL_BASE])
+    # cors = CORS(app, origins=[FRONTEND_URL_BASE])
+    # cors = CORS(app, origins=['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000'])
+    cors = CORS(app, origins=['http://localhost:3000', 'http://localhost:5000', 'http://127.0.0.1:3000', 'http://127.0.0.1:5000'])
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -63,6 +67,10 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    @app.route('/')
+    def index():
+        return app.send_static_file('index.html')
     
     # a simple test page that says hello
     @app.route('/hello')

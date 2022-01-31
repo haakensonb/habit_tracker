@@ -1,0 +1,19 @@
+services:
+  habit-tracker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev.backend
+    volumes:
+      - './habit_tracker:/app/habit_tracker'
+      - './wsgi.py:/app/wsgi.py'
+    ports:
+      - '5000:5000'
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev.frontend
+    volumes:
+      - './public:/app/public'
+      - './src:/app/src'
+    ports:
+      - '3000:3000'
