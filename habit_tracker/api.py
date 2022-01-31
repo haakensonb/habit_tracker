@@ -34,16 +34,14 @@ class HabitsAPI(MethodView):
             query = Habit.query.filter(Habit.user_id == current_user.id).all()
             return habits_schema.jsonify(query)
             
-        # if a habit_id is provided in the url
-        elif habit_id:
-            # need to add some sort of error handling for when habit_id is out of range
-            query = Habit.query.get(habit_id)
-            if query is None:
-                return jsonify({'message': 'Habit does not exist'})
-            elif query.user_id == current_user.id:
-                return habit_schema.jsonify(query)
-            else:
-                return jsonify({'message': 'That\'s not yours!'})
+        # need to add some sort of error handling for when habit_id is out of range
+        query = Habit.query.get(habit_id)
+        if query is None:
+            return jsonify({'message': 'Habit does not exist'})
+        elif query.user_id == current_user.id:
+            return habit_schema.jsonify(query)
+        else:
+            return jsonify({'message': 'That\'s not yours!'})
     
 
     @jwt_required
