@@ -3,6 +3,8 @@
 FROM node:14
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
+ARG REACT_APP_PORT
+ENV REACT_APP_PORT $REACT_APP_PORT
 COPY ./src ./src
 COPY ./public ./public
 COPY ./package.json ./package-lock.json ./

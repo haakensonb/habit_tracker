@@ -12,6 +12,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev.frontend
+      args:
+        # Backend port number that React sends requests to
+        - REACT_APP_PORT=5000
     volumes:
       - './public:/app/public'
       - './src:/app/src'
