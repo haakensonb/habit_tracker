@@ -18,11 +18,19 @@ def create_app(test_config=None):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    from habit_tracker.models import db, ma, bcrypt
+    from habit_tracker.models import db, ma, bcrypt, User
     # setup sqlalchemy
     db.init_app(app)
     with app.app_context():
         db.create_all()
+        # Create demo account if it doesn't exist
+        demo_account = User.query.filter_by(username='DemoAccount').first()
+        if demo_account is None:
+            print('Creating DemoAccount user')
+            u = User(email='demo@demo.com', username='DemoAccount', password=User.generate_hash('habitTester123'), email_confirmed=1)
+            u.save()
+        else:
+            print('DemoAccount user already exists')
     # setup marshmallow
     ma.init_app(app)
     # setup hashing

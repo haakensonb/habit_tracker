@@ -1,3 +1,3 @@
-// const baseURL = 'http://localhost:3000';
-const baseURL = 'http://localhost:5000';
+const port = process.env.REACT_APP_PORT
+const baseURL = `http://localhost:${port}`;
 export default baseURL;
