@@ -77,6 +77,13 @@ class LoginForm extends Component {
         <br/>
         <br/>
         <Link className='button' to='/account_reset'>Forgot password</Link>
+        <br />
+        <br />
+        <h3 className="has-text-weight-bold">Demo</h3>
+          <p>Habit Tracker can be tried out using the demo account.<br></br>
+            Username: DemoAccount <br></br>
+            Password: habitTester123</p>
+          <p className="has-text-weight-bold">Demo account can be used by anyone and anyone can view its data. If you want your private data to persist you must register your own account.</p>
         </section>
         )
     }

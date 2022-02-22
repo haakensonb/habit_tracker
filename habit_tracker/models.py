@@ -13,7 +13,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=True, nullable=False)
-    # use 0 or 1 as true or false
+    # 1 is true, 0 is false
     email_confirmed = db.Column(db.Integer, default=0)
 
 
