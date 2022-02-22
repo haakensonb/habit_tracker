@@ -35,7 +35,7 @@ mccabe==0.6.1
 more-itertools==4.3.0
 pathlib2==2.3.2
 pluggy==0.7.1
-py==1.5.4
+py==1.10.0
 pycparser==2.19
 PyJWT==1.6.4
 pylint==1.9.1
