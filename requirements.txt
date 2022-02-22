@@ -14,7 +14,7 @@ factory-boy==3.2.1
 Faker==13.0.0
 Flask==1.0.2
 Flask-Bcrypt==0.7.1
-Flask-Cors==3.0.4
+Flask-Cors==3.0.9
 Flask-JWT-Extended==3.12.1
 Flask-Login==0.4.1
 Flask-Mail==0.9.1
