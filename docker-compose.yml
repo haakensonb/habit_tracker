@@ -6,6 +6,8 @@ services:
     volumes:
       - './habit_tracker:/app/habit_tracker'
       - './wsgi.py:/app/wsgi.py'
+      - './config.py:/app/config.py'
+      - './secrets.py:/app/secrets.py'
     ports:
       - '5000:5000'
   frontend:

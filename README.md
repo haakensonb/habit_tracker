@@ -1,7 +1,3 @@
-
-
-
-
 # Habit Tracker
 
 ---
@@ -14,7 +10,7 @@ The basic idea of the X effect for habit building is that a person should mark a
 
 ---
 
- ### Demo
+## Demo
 
 Try out the habit tracker [here](https://www.projects.brandonhaakenson.com/)
 
@@ -22,11 +18,53 @@ Username: DemoAccount
 
 Password: habitTester123
 
-**Demo account data is cleared daily. If you want your data to persist you must register your own account.**
+**If you want your data to persist you must register your own account.**
 
 ---
 
-### Backend
+## Running Project Locally
+
+Requires docker to be installed.
+
+**Option 1:**
+
+
+Build and run using a single container (useful for deploying to places like Heroku)
+```
+docker build -f Dockerfile -t habit-tracker-combo --build-arg REACT_APP_PORT=3000 .
+
+docker run --rm -p 3000:3000 habit-tracker-combo
+```
+Then navigate to `http://localhost:3000/`
+
+**Option 2:**
+
+
+Use separate containers for frontend and backend
+```
+docker-compose up --build
+```
+Then navigate to `http://localhost:3000/`
+
+## Running Tests
+
+```
+# Build the container
+docker build -f Dockerfile -t habit-tracker-combo --build-arg REACT_APP_PORT=3000 .
+
+# Running tests in the container
+docker run habit-tracker-combo sh -c "python3 -m pytest"
+```
+---
+## Troubleshooting
+If you are using Docker with WSL2 you may run into a networking bug that causes a CORs error while trying to login.
+
+In this case, try restarting WSL2 using `wsl --shutdown` in the command prompt. Restart Docker when prompted and then try to build the container again.
+
+---
+
+
+## Backend
 
 The backend of this project is an API made with Flask. Unit tests for the backend are not exhaustive but can be found in the tests folder.
 
@@ -40,91 +78,7 @@ The backend of this project is an API made with Flask. Unit tests for the backen
 
 ---
 
-### Frontend
+## Frontend
 
 The frontent of this project was made using React and Redux.
 
----
-
-### Requirements
-
-Full list of Python requirements can be found in ```requirements.txt```
-
-React also has a list of npm dependencies in ```package.json```
-
----
-
-### How to run this project locally
-
-1. Setup virtual environment and install Python requirements
-
-   ```
-   python -m venv env
-   source env/bin/activate
-   pip install -r requirements.txt
-   ```
-
-2. Configure Flask
-
-   ```
-   export FLASK_APP=habit_tracker
-   export FLASK_ENV=development
-   ```
-
-3. Edit ```example_config.py``` so that it contains the username and password for an smtp mail server such as mailtrap. Also generate a secret key:
-
-   ```
-   python
-   >>> import os
-   >>> os.urandom(24)
-   ```
-
-   Use the output of this as the secret key. Then rename ```example_config.py``` to ```config.py```.
-
-4. Create database
-
-   ```
-   flask shell
-   >>> from habit_tracker.models import db
-   >>> db.create_all()
-   >>> quit()
-   ```
-
-4. Start Flask server
-
-   ```
-   flask run
-   ```
-
-5. Install npm requirements
-
-   ```
-   cd frontend
-   npm install
-   ```
-
-6. Start React on frontend
-
-   ```
-   npm start
-   ```
-
-7. Go to link specified in output of npm start. Make sure that the variable ```FRONTEND_URL_BASE``` in ```config.py``` is set to the same URL that npm starts React on.
-
-# TODO:
-
-  
-
-Add tests for frontend
-
-  
-
-Refactor init
-
-  
-
-Refactor message system. Send message type from api along with message
-
-  
-
-Tests are kind of slow. Maybe they can be refactored to be faster? Think mocking may be useful for that.
