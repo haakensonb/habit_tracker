@@ -9,11 +9,11 @@ from flask_jwt_extended import (
 )
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail, Message
-from config import SECRET_KEY, FRONTEND_URL_BASE
+from config import FRONTEND_URL_BASE, base_config
 
 mail = Mail()
 
-email_token_serializer = URLSafeTimedSerializer(SECRET_KEY)
+email_token_serializer = URLSafeTimedSerializer(base_config.SECRET_KEY)
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 

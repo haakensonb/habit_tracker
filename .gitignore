@@ -12,6 +12,7 @@ habit_tracker/.pytest_cache/
 secret.py
 secrets.py
 env
+.env
 
 # dependencies
 node_modules

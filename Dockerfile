@@ -22,7 +22,7 @@ WORKDIR /app
 COPY --from=build-step /app/build ./build
 
 COPY ./habit_tracker ./habit_tracker
-COPY ./config.py ./requirements.txt ./wsgi.py ./secrets.py ./ 
+COPY ./config.py ./requirements.txt ./wsgi.py ./.env ./ 
 RUN pip install -r ./requirements.txt
 
 ENV FLASK_APP habit_tracker
