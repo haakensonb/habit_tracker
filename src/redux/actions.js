@@ -1,14 +1,8 @@
-import axiosInstance from '../utils/axiosInstance';
 import axios from 'axios';
-import { showMessage } from "../utils/showMessage";
+import axiosInstance from '../utils/axiosInstance';
 import baseURL from '../utils/baseURL';
-
-export const SEND_DATA = 'SEND_DATA';
-export const RECEIVE_DATA = 'RECEIVE_DATA';
-export const LOGOUT = 'LOGOUT';
-export const UPDATE_AUTH_TOKEN = 'UPDATE_AUTH_TOKEN';
-export const ADD_MESSAGE = 'ADD_MESSAGE';
-export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
+import { showMessage } from "../utils/showMessage";
+import { SEND_DATA, RECEIVE_DATA, LOGOUT, ADD_MESSAGE, CLEAR_MESSAGE } from "./actionConsts";
 
 
 export const sendData = () => {
@@ -68,14 +62,6 @@ export const logoutUserFromApi = (authToken, refreshToken) => {
         showMessage();
       })
 
-  }
-}
-
-
-export const updateAuthToken = (authToken) => {
-  return {
-    type: UPDATE_AUTH_TOKEN,
-    authToken: authToken
   }
 }
 

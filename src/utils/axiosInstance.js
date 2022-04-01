@@ -1,7 +1,7 @@
 import axios from 'axios';
 import isExpired from './isExpired';
 import issueToken from './issueToken';
-import { updateAuthToken } from '../redux/actions';
+import { updateAuthToken } from '../redux/actionUpdateAuthToken';
 import { store } from '../redux/store';
 import { toast } from 'react-toastify';
 import baseURL from './baseURL';

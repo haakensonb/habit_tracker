@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SEND_DATA, RECEIVE_DATA, LOGOUT, UPDATE_AUTH_TOKEN, ADD_MESSAGE, CLEAR_MESSAGE } from "./actions";
+import { SEND_DATA, RECEIVE_DATA, LOGOUT, UPDATE_AUTH_TOKEN, ADD_MESSAGE, CLEAR_MESSAGE } from "./actionConsts";
 
 const defaultState = {
   isFetching: false,
