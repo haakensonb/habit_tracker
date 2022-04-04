@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_jwt_extended import jwt_required, JWTManager
 from habit_tracker.models import RevokedToken, db, ma, bcrypt, User
 from habit_tracker.auth import mail
-from config import base_config
+from config import base_config, FRONTEND_URL_BASE
 
 def create_app(test_config=None):
     # Create and configure the app
@@ -42,7 +42,7 @@ def create_app(test_config=None):
         return RevokedToken.is_jti_blacklisted(jti)
 
     # Setup CORS for react
-    cors = CORS(app, origins=['http://localhost:3000', 'http://localhost:5000', 'http://0.0.0.0:3000', 'http://0.0.0.0:5000', 'http://127.0.0.1:3000', 'http://127.0.0.1:5000'])
+    cors = CORS(app, origins=['http://localhost:3000', 'http://localhost:5000', FRONTEND_URL_BASE])
 
     @app.route('/')
     def index():

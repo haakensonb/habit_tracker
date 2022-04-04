@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 base_dir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(base_dir, '.env'))
 
-PORT = os.environ.get('REACT_APP_PORT')
-URL = os.environ.get('REACT_APP_URL')
+PORT = os.environ.get('PORT')
+URL = os.environ.get('URL')
 FRONTEND_URL_BASE = f'{URL}:{PORT}'
 
 class base_config(object):
