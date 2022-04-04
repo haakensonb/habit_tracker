@@ -31,9 +31,9 @@ Requires docker to be installed.
 
 Build and run using a single container (useful for deploying to places like Heroku)
 ```
-docker build -f Dockerfile -t habit-tracker-combo --build-arg REACT_APP_PORT=3000 .
+docker build -f Dockerfile -t habit-tracker-combo .
 
-docker run --rm -p 3000:3000 habit-tracker-combo
+docker run -d -p 3000:3000 --env PORT=3000 --env URL=http://localhost habit-tracker-combo
 ```
 Then navigate to `http://localhost:3000/`
 
