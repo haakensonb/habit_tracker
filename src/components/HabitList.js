@@ -6,7 +6,6 @@ import axiosInstance from '../utils/axiosInstance';
 import connect from 'react-redux/lib/connect/connect';
 import { addMessage } from '../redux/actions';
 import { showMessage } from '../utils/showMessage';
-import baseURL from '../utils/baseURL';
 
 class HabitList extends Component {
   constructor(props) {
@@ -41,7 +40,7 @@ class HabitList extends Component {
   handleSubmit (event) {
     event.preventDefault();
     
-    const url = `${baseURL}/api/habits/`;
+    const url = '/api/habits/';
     const data = {
       name: this.state.name,
       description: this.state.description,
@@ -61,7 +60,7 @@ class HabitList extends Component {
   }
 
   componentDidMount() {
-    const url = `${baseURL}/api/habits/`;
+    const url = '/api/habits/';
 
     axiosInstance.get(url).then((res) => {
       this.setState({

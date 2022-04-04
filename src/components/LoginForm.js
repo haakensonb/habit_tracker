@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import { setAuthData} from '../redux/actions';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
-import baseURL from '../utils/baseURL';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -27,7 +26,7 @@ class LoginForm extends Component {
     }
   
     handleSubmit(event) {
-      const url = `${baseURL}/auth/login`;
+      const url = '/auth/login';
       this.props.login(url, this.state.username, this.state.password)
       event.preventDefault();
     }

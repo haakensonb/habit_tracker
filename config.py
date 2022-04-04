@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 base_dir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(base_dir, '.env'))
 
-# Change to whatever port React starts on
-FRONTEND_URL_BASE = os.environ.get('FRONTEND_URL_BASE')
+PORT = os.environ.get('REACT_APP_PORT')
+URL = os.environ.get('REACT_APP_URL')
+FRONTEND_URL_BASE = f'{URL}:{PORT}'
 
 class base_config(object):
     """Default config options"""

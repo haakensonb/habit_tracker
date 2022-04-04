@@ -3,7 +3,6 @@ import axiosInstance from '../utils/axiosInstance';
 import { addMessage } from '../redux/actions';
 import { showMessage } from '../utils/showMessage';
 import connect from 'react-redux/lib/connect/connect';
-import baseURL from '../utils/baseURL';
 
 class AccountReset extends Component {
   constructor(props) {
@@ -25,7 +24,7 @@ class AccountReset extends Component {
   }
 
   handleSubmit(event) {
-    const url = `${baseURL}/auth/account_reset`;
+    const url = '/auth/account_reset';
     const data = {
       email: this.state.email
     }

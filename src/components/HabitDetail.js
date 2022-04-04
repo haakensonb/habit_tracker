@@ -6,7 +6,6 @@ import axiosInstance from '../utils/axiosInstance';
 import connect from 'react-redux/lib/connect/connect';
 import { addMessage } from '../redux/actions';
 import { showMessage } from '../utils/showMessage';
-import baseURL from '../utils/baseURL';
 
 class HabitDetail extends Component {
   constructor(props) {
@@ -20,7 +19,7 @@ class HabitDetail extends Component {
     }
 
     this.id = this.props.match.params.id;
-    this.url = `${baseURL}/api/habits/${this.id}`;
+    this.url = `/api/habits/${this.id}`;
 
     this.deleteHabit = this.deleteHabit.bind(this);
     this.getHighestStreak = this.getHighestStreak.bind(this);

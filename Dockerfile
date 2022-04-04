@@ -8,8 +8,8 @@
 FROM node:14 as build-step
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
-ARG REACT_APP_PORT
 ENV REACT_APP_PORT $REACT_APP_PORT
+ENV REACT_APP_URL $REACT_APP_URL
 COPY ./package.json ./package.json
 COPY ./src ./src
 COPY ./public ./public
@@ -22,11 +22,11 @@ WORKDIR /app
 COPY --from=build-step /app/build ./build
 
 COPY ./habit_tracker ./habit_tracker
-COPY ./config.py ./requirements.txt ./wsgi.py ./.env ./ 
+COPY ./config.py ./requirements.txt ./wsgi.py ./.env* ./ 
 RUN pip install -r ./requirements.txt
 
 ENV FLASK_APP habit_tracker
 ENV FLASK_ENV production
 
-EXPOSE 3000
-CMD ["gunicorn", "-b", ":3000", "wsgi:app"]
+EXPOSE $REACT_APP_PORT
+CMD gunicorn -b :$REACT_APP_PORT wsgi:app

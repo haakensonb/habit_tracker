@@ -1,6 +1,5 @@
 import axios from 'axios';
 import axiosInstance from '../utils/axiosInstance';
-import baseURL from '../utils/baseURL';
 import { showMessage } from "../utils/showMessage";
 import { SEND_DATA, RECEIVE_DATA, LOGOUT, ADD_MESSAGE, CLEAR_MESSAGE } from "./actionConsts";
 
@@ -31,8 +30,8 @@ export const logoutUser = () => {
 
 export const logoutUserFromApi = (authToken, refreshToken) => {
   return (dispatch) => {
-    const authUrl = `${baseURL}/auth/logout/access`;
-    const refreshUrl = `${baseURL}/auth/logout/refresh`;
+    const authUrl = '/auth/logout/access';
+    const refreshUrl = '/auth/logout/refresh';
     // have to make two seperate api calls here
     // one to logout the auth token and one for the refresh token
 
